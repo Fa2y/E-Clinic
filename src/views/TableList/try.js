@@ -96,11 +96,11 @@ const openInPopup = item => {
               { 
                 Data.map(post=>{
                 return(
-                 [ 
+                 
                     ["1", "Dakota Rice", "$36,738", "1 ere anne", 
           
           ] 
-           ]
+           
             
             
            )
