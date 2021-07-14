@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -9,8 +9,8 @@ import Card from "components/Card/Card.js";
 import Button from "components/CustomButtons/Button.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-//import { CenterFocusStrong } from "@material-ui/icons";
-
+import useSWR from "swr";
+import { patientAPI } from "../../lib/api/admin";
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -45,6 +45,25 @@ const useStyles = makeStyles(styles);
 
 export default function TableList() {
   const classes = useStyles();
+   const [patients, setPatients] = useState([]);
+
+  const {
+    data: pData,
+    error: pErr,
+  } = useSWR([""],patientAPI.fetchPatients);
+  
+  useEffect(()=>{
+    if(!pErr && pData){
+      setPatients([]);
+      const data = patients.concat(
+      pData?.data.map((patient) => {
+        return [patient.user.first_name,patient.user.last_name,patient.user.email,patient.user.date_joined,`${patient.type} : ${patient.education_level}`]
+      })
+      );
+      setPatients(data);
+  }else{
+    //Show error
+  }},[pData,pErr])
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -56,15 +75,22 @@ export default function TableList() {
             <Table
               tableHeaderColor="primary"
               tableHead={["Nom", "Prenom", "Email", "Date", "Niveau","Operations"]}
-              tableData={[
-                ["1", "Dakota Rice", "$36,738", "Niger","1ere annee", <div><Button color="success" >
-                Accepter
-              </Button>  <Button color="danger" >
-                Refuser
-              </Button>
-              </div>],
+              tableData={
+                patients ? patients.map((patient)=>{
+                  return (patient.concat(
+                  <div>
+                    <Button color="success" >
+                      Accepter
+                    </Button>
+                    <Button color="danger" >
+                      Refuser
+                    </Button>
+                  </div>))
+                }
+                ):[]
                
-              ]}
+              
+            }
             />
           </CardBody>
         </Card>

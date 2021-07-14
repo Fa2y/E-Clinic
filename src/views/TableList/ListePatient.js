@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 //@material-ui/core components
 import EmployeeForm from "../Employees/EmployeeForm";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,6 +15,8 @@ import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import Controls from "../../components/controls/Controls";
 import Popup from "../../components/Popup";
 import Data from "./data.json";
+import useSWR from "swr";
+import {patientAPI} from "../../lib/api/admin";
 
 //import { CenterFocusStrong } from "@material-ui/icons";
 
@@ -58,18 +60,26 @@ const useStyles = makeStyles(styles);
 export default function ListePatient() {
   const classes = useStyles();
   const [recordForEdit, setRecordForEdit] = useState(null)
-  const [records, setRecords] = useState(employeeService.getAllEmployees())
   const [openPopup, setOpenPopup] = useState(false)
-  const addOrEdit = (employee, resetForm) => {
-    if (employee.id == 0)
-        employeeService.insertEmployee(employee)
-    else
-        employeeService.updateEmployee(employee)
-    resetForm()
-    setRecordForEdit(null)
-    setOpenPopup(false)
-    setRecords(employeeService.getAllEmployees())
-}
+  const [patients, setPatients] = useState([]);
+
+  const {
+    data: pData,
+    error: pErr,
+  } = useSWR([""],patientAPI.fetchPatients);
+  
+  useEffect(()=>{
+    if(!pErr && pData){
+      setPatients([]);
+      const data = patients.concat(
+      pData?.data.map((patient) => {
+        return [patient.user.first_name,patient.user.last_name,patient.user.email,patient.education_level]
+      })
+      );
+      setPatients(data);
+  }else{
+    //Show error
+  }},[pData,pErr])
 
 const openInPopup = item => {
     setRecordForEdit(item)
@@ -92,24 +102,45 @@ const openInPopup = item => {
               tableHeaderColor="primary"
               tableHead={["Nom", "Prenom", "Email","Niveau",<div align="center">Operations </div>]}
 
-              tableData={[
-                ["1", "Dakota Rice", "$36,738", "1 ere anne", 
-                <div>
-                <Button color="success" >
-                Activer
-              </Button>  
-               <Button color="danger" >
-                Disactiver
-              </Button>
-              <Button color="primary" >
-                Modifier
-              </Button>
-              <Button color="warning" >
-                Archiver
-              </Button>
-              </div>],
+              tableData={
+                  patients ? patients.map((patient)=>{
+                  return (patient.concat(
+                  <div>
+                    <Button color="success" >
+                    Activer
+                    </Button>  
+                    <Button color="danger" >
+                      Disactiver
+                    </Button>
+                    <Button color="primary" >
+                      Modifier
+                    </Button>
+                    <Button color="warning" >
+                      Archiver
+                    </Button>
+                  </div>
+                  ))
+              }
+              ):[]
+                // [
+              //   ["1", "Dakota Rice", "$36,738", "1 ere anne", 
+              //   <div>
+              //   <Button color="success" >
+              //   Activer
+              // </Button>  
+              //  <Button color="danger" >
+              //   Disactiver
+              // </Button>
+              // <Button color="primary" >
+              //   Modifier
+              // </Button>
+              // <Button color="warning" >
+              //   Archiver
+              // </Button>
+              // </div>],
                
-              ]}
+              // ]
+              }
             
             />
           </CardBody>
@@ -122,10 +153,10 @@ const openInPopup = item => {
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
             >
-                <EmployeeForm
+                {/* <EmployeeForm
                      recordForEdit={recordForEdit}
                      addOrEdit={addOrEdit}
-                     />
+                     /> */}
             </Popup>
     </GridContainer>
     
