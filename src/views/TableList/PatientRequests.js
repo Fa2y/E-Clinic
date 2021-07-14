@@ -9,6 +9,7 @@ import Card from "components/Card/Card.js";
 import Button from "components/CustomButtons/Button.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import Popup from "../../components/Popup";
 import useSWR from "swr";
 import { patientAPI } from "../../lib/api/admin";
 const styles = {
@@ -45,7 +46,9 @@ const useStyles = makeStyles(styles);
 
 export default function TableList() {
   const classes = useStyles();
-   const [patients, setPatients] = useState([]);
+  const [openPopup, setOpenPopup] = useState(false)
+  const [patients, setPatients] = useState([]);
+  const [deletedPatient, setDeletedPatient] = useState("");
 
   const {
     data: pData,
@@ -54,16 +57,25 @@ export default function TableList() {
   
   useEffect(()=>{
     if(!pErr && pData){
-      setPatients([]);
-      const data = patients.concat(
-      pData?.data.map((patient) => {
-        return [patient.user.first_name,patient.user.last_name,patient.user.email,patient.user.date_joined,`${patient.type} : ${patient.education_level}`]
-      })
-      );
+      const data = pData?.data.map((patient) => {
+        if(!patient.is_approved){
+        return [patient.user.first_name,patient.user.last_name,patient.user.email,patient.user.date_joined,`${patient.type} : ${patient.education_level}`,patient.pid]
+        }
+      });
       setPatients(data);
+
   }else{
     //Show error
-  }},[pData,pErr])
+  }},[pData,pErr]);
+
+  const handleApproave = (pid)=> {
+    console.log("approve",pid);
+    // patientAPI.editPatient(pid,{is_approved: true});
+  };
+  const handleDelete = (pid)=> {
+    console.log("delete",pid);
+    // patientAPI.deletePatient(pid);
+  };
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -77,12 +89,12 @@ export default function TableList() {
               tableHead={["Nom", "Prenom", "Email", "Date", "Niveau","Operations"]}
               tableData={
                 patients ? patients.map((patient)=>{
-                  return (patient.concat(
+                  return (patient.slice(0,5).concat(
                   <div>
-                    <Button color="success" >
+                    <Button color="success" onClick={() => {handleApproave(patient[5])}}>
                       Accepter
                     </Button>
-                    <Button color="danger" >
+                    <Button color="danger" onClick={() => {setOpenPopup(true);setDeletedPatient(patient[5])}}>
                       Refuser
                     </Button>
                   </div>))
@@ -97,6 +109,21 @@ export default function TableList() {
       </GridItem>
       <GridItem xs={12} sm={12} md={12}>
       </GridItem>
+      <Popup title="Confirmation"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+                >
+                 <div>
+                   <p>L'utilisateur sera supprimé si vous refusez l'invitation</p>
+                    <Button color="success" onClick={() => {handleDelete(deletedPatient)}}>
+                      Refuser
+                    </Button>
+                    <Button color="info" onClick={() => {setOpenPopup(false)}}>
+                      Cancel
+                    </Button>
+                  </div>
+
+      </Popup>
     </GridContainer>
   );
 }

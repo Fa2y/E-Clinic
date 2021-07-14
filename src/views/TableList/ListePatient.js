@@ -70,16 +70,13 @@ export default function ListePatient() {
   
   useEffect(()=>{
     if(!pErr && pData){
-      setPatients([]);
-      const data = patients.concat(
-      pData?.data.map((patient) => {
-        return [patient.user.first_name,patient.user.last_name,patient.user.email,patient.education_level]
-      })
-      );
+      const data = pData?.data.map((patient) => {
+        return [patient.user.first_name,patient.user.last_name,patient.user.email,patient.user.date_joined,`${patient.type} : ${patient.education_level}`]
+      });
       setPatients(data);
   }else{
     //Show error
-  }},[pData,pErr])
+  }},[pData,pErr]);
 
 const openInPopup = item => {
     setRecordForEdit(item)
