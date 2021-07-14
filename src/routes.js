@@ -37,6 +37,7 @@ import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 import RTLPage from "views/RTLPage/RTLPage.js";
 import GroupIcon from '@material-ui/icons/Group';
 import ListePatient from "views/TableList/ListePatient";
+import ArchivedPatients from "views/TableList/ArchivedPatients";
 import Try from "views/TableList/try";
 
 const dashboardRoutes = [
@@ -46,6 +47,14 @@ const dashboardRoutes = [
     rtlName: "قائمة الجدول",
     icon: GroupIcon,
     component: ListePatient,
+    layout: "/admin",
+  },
+  {
+    path: "/archived_patients",
+    name: "Les Patients Archivés",
+    rtlName: "قائمة الجدول",
+    icon: GroupIcon,
+    component: ArchivedPatients,
     layout: "/admin",
   },
   {

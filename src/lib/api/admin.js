@@ -67,5 +67,37 @@ export const patientAPI = {
         return error.response;
         }
     },
+    fetchDeletedPatients: async ()=>{
+        const token = getToken();
+        try {
+      const response = await axios.get(
+        `${SERVER_URL}/api/deleted_patients/`,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+    },
+    restorePatient: async (pid)=>{
+        const token = getToken();
+        try {
+      const response = await axios.patch(
+        `${SERVER_URL}/api/deleted_patients/${pid}/restore/`,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+    },
 }
 

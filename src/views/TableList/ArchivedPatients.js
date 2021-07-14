@@ -48,12 +48,12 @@ export default function TableList() {
   const classes = useStyles();
   const [openPopup, setOpenPopup] = useState(false)
   const [patients, setPatients] = useState([]);
-  const [deletedPatient, setDeletedPatient] = useState("");
+  const [restoredPatient, setRestoredPatient] = useState("");
 
   const {
     data: pData,
     error: pErr,
-  } = useSWR([""],patientAPI.fetchPatients);
+  } = useSWR(["archived"],patientAPI.fetchDeletedPatients);
   
   useEffect(()=>{
     if(!pErr && pData){
@@ -68,21 +68,18 @@ export default function TableList() {
     //Show error
   }},[pData,pErr]);
 
-  const handleApproave = (pid)=> {
-    console.log("approve",pid);
-    patientAPI.editPatient(pid,{is_approved: true});
-  };
-  const handleDelete = (pid)=> {
-    console.log("delete",pid);
-    patientAPI.deletePatient(pid);
+  const handleRestore = (pid)=> {
+    console.log("restore",pid);
+    patientAPI.restorePatient(pid);
     setOpenPopup(false);
   };
+ 
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Liste des comptes créés</h4>
+            <h4 className={classes.cardTitleWhite}>Liste des comptes archivés</h4>
           </CardHeader>
           <CardBody>
             <Table
@@ -92,11 +89,8 @@ export default function TableList() {
                 patients ? patients.map((patient)=>{
                   return (patient.slice(0,5).concat(
                   <div>
-                    <Button color="success" onClick={() => {handleApproave(patient[5])}}>
-                      Accepter
-                    </Button>
-                    <Button color="danger" onClick={() => {setOpenPopup(true);setDeletedPatient(patient[5])}}>
-                      Refuser
+                    <Button color="success" onClick={() => {setOpenPopup(true);setRestoredPatient(patient[5])}}>
+                      Restaurer
                     </Button>
                   </div>))
                 }
@@ -115,9 +109,9 @@ export default function TableList() {
         setOpenPopup={setOpenPopup}
                 >
                  <div>
-                   <p>L'utilisateur sera supprimé si vous refusez l'invitation</p>
-                    <Button color="success" onClick={() => {handleDelete(deletedPatient)}}>
-                      Refuser
+                   <p>Voulez-vous restaurer le patient</p>
+                    <Button color="success" onClick={() => {handleRestore(restoredPatient)}}>
+                      Restaurer
                     </Button>
                     <Button color="info" onClick={() => {setOpenPopup(false)}}>
                       Cancel
