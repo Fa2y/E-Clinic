@@ -22,25 +22,43 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 // core components
 import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
+import SignUp from "views/auth/signup2.js";
 
 // SWR global config
-import { SWRConfig } from 'swr'
+import { SWRConfig } from "swr";
+
+//Toastify for notification
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "assets/css/material-dashboard-react.css?v=1.10.0";
 
 ReactDOM.render(
   <BrowserRouter>
     <SWRConfig
-    value={{
-      refreshInterval:0,
-      shouldRetryOnError:false,
-      revalidateOnFocus:false,
-    }}>
-    <Switch>
-      <Route path="/admin" component={Admin} />
-      <Route path="/rtl" component={RTL} />
-      <Redirect from="/" to="/admin/dashboard" />
-    </Switch>
+      value={{
+        refreshInterval: 0,
+        shouldRetryOnError: false,
+        revalidateOnFocus: false,
+      }}
+    >
+      <ToastContainer
+        position="bottom-left"
+        autoClose={7000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <Switch>
+        <Route path="/admin" component={Admin} />
+        <Route path="/rtl" component={RTL} />
+        <Route path="/signup" component={SignUp} />
+        <Redirect from="/" to="/admin/dashboard" />
+      </Switch>
     </SWRConfig>
   </BrowserRouter>,
   document.getElementById("root")

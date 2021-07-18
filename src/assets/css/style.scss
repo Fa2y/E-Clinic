@@ -1,0 +1,307 @@
+//@import "compass/css3";
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.header {
+  font-size: 24px;
+  font-family: "Open Sans", sans-serif;
+}
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  .image {
+    width: 21em;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .form {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: fit-content;
+      label {
+        font-size: 20px;
+      }
+      input {
+        margin-top: 6px;
+        min-width: 18em;
+        height: 37px;
+        padding: 0px 10px;
+        font-size: 16px;
+        font-family: "Open Sans", sans-serif;
+        background-color: #f3f3f3;
+        border: 0;
+        border-radius: 4px;
+        margin-bottom: 31px;
+        transition: all 250ms ease-in-out;
+        &:focus {
+          outline: none;
+          box-shadow: 0px 0px 12px 0.8px #0e81ce96;
+        }
+      }
+    }
+  }
+  .footer {
+    margin-top: 3em;
+  }
+}
+
+.form-select {
+  //@include user-select(none);
+
+  background: #ffffff;
+  overflow: hidden;
+  border: 1px solid #cbcbcb;
+  border-radius: 3px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.07);
+
+  //@include single-transition(box-shadow, 0.2s);
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  &:after {
+    content: "▾";
+    position: absolute;
+    top: 0;
+    right: 12px;
+    z-index: 1;
+    color: #bbbbbb;
+    line-height: 40px;
+    font-size: 14px;
+
+    .ie & {
+      display: none;
+    }
+  }
+}
+
+select {
+  position: relative;
+  background: transparent;
+  background-image: none;
+  display: block;
+  width: 105%;
+  outline: none;
+  color: #010101;
+  cursor: pointer;
+  z-index: 2;
+  border: none;
+  padding: 10px 10px 10px 5px;
+  // This is so hacky.. (for Firefox)
+  // Removes the default select arrow.
+  text-overflow: "";
+  text-indent: 5px;
+  // End of brutal hack
+
+  //@include appearance(none);
+
+  &[multiple="multiple"] {
+    height: auto;
+    border: 1px solid #cbcbcb;
+    border-radius: 3px;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.07);
+
+    //@include single-transition(box-shadow, 0.2s);
+
+    &:hover {
+      border-color: #cccccc;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  option[disabled] {
+    color: #eeeeee;
+    text-shadow: none;
+    border: none;
+  }
+}
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #888888;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/*==========  Generic styling  ==========*/
+
+.column-6 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -20px 0 0 -150px;
+  width: 300px;
+}
+
+.btn {
+  padding: 10px 10px;
+}
+
+@keyframes button-shadow {
+  from {
+    transform: rotate(0);
+    bottom: -5px;
+    right: -5px;
+    opacity: 1;
+  }
+  to {
+    transform: rotate(40deg);
+    bottom: 50px;
+    right: -60px;
+    opacity: 0;
+  }
+}
+
+@keyframes button-arrow-rotate {
+  0% {
+    width: 15px;
+    margin: -25px auto 0;
+  }
+  1% {
+    width: 10px;
+    height: 0px;
+    margin-top: 15px;
+    transform: rotate(45deg);
+  }
+  100% {
+    width: 10px;
+    margin-top: 15px;
+    transform: rotate(45deg);
+    height: 35px;
+  }
+}
+
+@keyframes button-arrow-down {
+  from {
+    bottom: -25px;
+    opacity: 1;
+  }
+  to {
+    bottom: -40px;
+    opacity: 0;
+  }
+}
+
+@keyframes button-arrow-up {
+  0% {
+    height: 20px;
+    transform: rotateZ(45deg);
+    right: -7px;
+  }
+  1% {
+    right: 0px;
+    height: 10px;
+    width: 0;
+    transform: rotateZ(0);
+  }
+  100% {
+    right: 0px;
+    height: 10px;
+    width: 20px;
+    transform: rotateZ(0);
+  }
+}
+
+button {
+  background-color: #b5b9c9;
+  width: 140px;
+  height: 70px;
+  border: none;
+  outline: none;
+  position: relative;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+
+  .arrow {
+    height: 25px;
+    width: 15px;
+    background-color: #abbad7;
+    border-radius: 2px;
+    margin: -25px auto 0;
+    position: relative;
+    &:after {
+      content: "";
+      height: 20px;
+      width: 20px;
+      position: absolute;
+      background-color: #abbad7;
+      border-radius: 2px;
+      transform: rotateZ(45deg) translate(1px, 7px);
+      bottom: 0;
+      right: -7px;
+      transition: all 0.5s;
+      transition-delay: 0.5s;
+    }
+    &:before {
+      content: "";
+      background-color: #abbad7;
+      height: 10px;
+      position: absolute;
+      left: -5px;
+      bottom: -25px;
+      border-radius: 2px;
+      transition: all 0.5s;
+    }
+  }
+
+  &:after,
+  &:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background-color: #abbad7;
+    height: 100%;
+    width: 100%;
+    bottom: -5px;
+    right: -5px;
+    border-radius: 5px;
+  }
+
+  &:after {
+    animation-play-state: pause;
+  }
+
+  &:active {
+    width: 180px;
+    height: 90px;
+  }
+
+  &:focus {
+    &:after {
+      animation: button-shadow 1s;
+    }
+
+    .arrow {
+      animation: button-arrow-rotate 0.5s forwards;
+      animation-delay: 0.5s;
+      &:after {
+        animation: button-arrow-up 0.5s forwards;
+        animation-delay: 0.5s;
+      }
+      &:before {
+        animation: button-arrow-down 0.5s forwards;
+      }
+    }
+  }
+}

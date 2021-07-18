@@ -17,3 +17,18 @@ export const setUser = (user) => {
   else cookies.remove("user", { path: "/" });
 };
 
+export function extractErrorMsg(data) {
+  if (typeof data == "string") return data;
+
+  let msgs = [];
+  Object.keys(data).forEach((key) => {
+    if (Array.isArray(data[key])) {
+      data[key].forEach((error) => {
+        msgs.push(`${key} : ${error}`);
+      });
+    } else {
+      msgs.push(`${key} : ${extractErrorMsg(data[key])}`);
+    }
+  });
+  return msgs;
+}

@@ -35,7 +35,7 @@ import NotificationsPage from "views/Notifications/Notifications.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 // core components/views for RTL layout
 import RTLPage from "views/RTLPage/RTLPage.js";
-import GroupIcon from '@material-ui/icons/Group';
+import GroupIcon from "@material-ui/icons/Group";
 import ListePatient from "views/TableList/ListePatient";
 import ArchivedPatients from "views/TableList/ArchivedPatients";
 import Try from "views/TableList/try";
@@ -81,8 +81,7 @@ const dashboardRoutes = [
     component: UserProfile,
     layout: "/admin",
   },
-  
-  
+
   /*
   {
     path: "/typography",
