@@ -54,8 +54,9 @@ export default function TableList() {
 
   useEffect(() => {
     if (!pErr && pData) {
-      const data = pData?.data.map((patient) => {
-        if (!patient.is_approved) {
+      const data = pData?.data
+        .filter((patient) => !patient.is_approved)
+        .map((patient) => {
           return [
             patient.user.first_name,
             patient.user.last_name,
@@ -64,8 +65,7 @@ export default function TableList() {
             `${patient.type} : ${patient.education_level}`,
             patient.pid,
           ];
-        }
-      });
+        });
       setPatients(data);
     } else {
       //Show error
@@ -73,11 +73,9 @@ export default function TableList() {
   }, [pData, pErr]);
 
   const handleApproave = (pid) => {
-    console.log("approve", pid);
     patientAPI.editPatient(pid, { is_approved: true });
   };
   const handleDelete = (pid) => {
-    console.log("delete", pid);
     patientAPI.deletePatient(pid);
     setOpenPopup(false);
   };
