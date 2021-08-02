@@ -24,14 +24,38 @@ import Admin from "layouts/Admin.js";
 import RTL from "layouts/RTL.js";
 
 import "assets/css/material-dashboard-react.css?v=1.10.0";
+// SWR global config
+import { SWRConfig } from "swr";
 
+//Toastify for notification
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 ReactDOM.render(
   <BrowserRouter>
+  <SWRConfig
+      value={{
+        refreshInterval: 0,
+        shouldRetryOnError: false,
+        revalidateOnFocus: false,
+      }}
+    >
+      <ToastContainer
+        position="bottom-left"
+        autoClose={7000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     <Switch>
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
+    </SWRConfig>
   </BrowserRouter>,
   document.getElementById("root")
 );
