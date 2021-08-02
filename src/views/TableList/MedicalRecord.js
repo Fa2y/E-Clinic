@@ -24,6 +24,10 @@ import { withWidth } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import { doctorAPI } from "lib/api/doctor";
+import AsynchronousSelectPatients from '../../components/AsynchronousSelectPatients';
+import {extractErrorMsg} from "lib/utils/helpers"
+import { toast } from "react-toastify";
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(1),
@@ -61,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MedicalExam() {
+export default function MedicalRecord() {
   const classes = useStyles();
   // const [patients, setPatients] = useState([]);
   // const { data: pData, error: pErr } = useSWR([""], patientAPI.fetchPatients);
@@ -86,14 +90,22 @@ export default function MedicalExam() {
   }, [pData, pErr]);*/
   //select fields const-----------------------
   const initialState={
-    patient: "",
-    social_number:"",
+    patient_data: {
+      user:{
+        first_name:'',
+        last_name:'',
+      },
+      type:'',
+      education_level:''
+    },
+    patient:"",
+    social_number:0,
     biometric: "",
-    tobaco_consumption: "",
+    tobaco_consumption: false,
     tobaco_taken_as: "",
-    number_units: "",
-    alcohol_consumption: "",
-    medication_consumption: "",
+    number_units: 0,
+    alcohol_consumption: false,
+    medication_consumption: false,
     medications: "",
     general_diseases:"",
     surgical_intervention:"",
@@ -102,11 +114,37 @@ export default function MedicalExam() {
   }
   const[keyForm,setkey]=React.useState(0)//when i click cancel : state change so all components on the form will re_render 
   const [values, setValues] = React.useState({
-    initialState
+    ...initialState
   });
-  const postData = () => {
-    console.log("labess");
-}
+  
+  const handlePatientChange = (event, selectedValue) => {
+    setValues({
+      ...values,
+      patient_data:selectedValue,
+      patient:selectedValue.pid
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //Reshape the object to send
+    const { patient_data, ...data } = values;
+    console.log(values)
+    const { data:resData, status } = await doctorAPI.createMedicalRecord(data);
+    console.log(resData)
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(resData);
+      errors.map((error) => {
+        toast.error(error);
+      });
+    } else {
+      toast.success("Medical Record created successfully!");
+    }
+    
+  };
+  // const handleSubmit=()=>{
+
+  // }
+
 const cancel = () => {
   setValues({
     ...initialState,
@@ -131,8 +169,7 @@ const handleChange = (event) => {
             <CardBody>
           <GridContainer>
           <GridItem xs={12}>
-            <SelectField name="patient" label="Patient" options={MedicalObjects.currencies} onChange={handleChange}
-          value={values.patient} />
+          <AsynchronousSelectPatients patient={values.patient_data} handleChange={handlePatientChange} />
           </GridItem>  
           </GridContainer>
               <GridContainer>
@@ -267,7 +304,7 @@ const handleChange = (event) => {
             </CardBody>
             <br></br>
             <div className={classes.btnDiv}>
-                <Button variant="contained" color="primary" size="large" className={classes.btn} onClick={postData} type='submit'>
+                <Button variant="contained" color="primary" size="large" className={classes.btn} onClick={handleSubmit} type='submit'>
                 Create
                </Button>
                         

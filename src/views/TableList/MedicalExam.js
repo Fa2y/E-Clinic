@@ -205,11 +205,11 @@ export default function MedicalExam() {
   //aptitude--------------------
   const APTITUDE = [
     {
-      value: 'true',
+      value: true,
       label: 'apt',
     },
     {  
-      value: 'false',
+      value: false,
       label: 'inapt',
     },
   ];
