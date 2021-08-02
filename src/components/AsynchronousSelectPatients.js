@@ -4,21 +4,19 @@ import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import useSWR from "swr";
-import { patientAPI } from "../lib/api/admin";
+import { doctorAPI } from "../lib/api/doctor";
 
 // <AsynchronousSelectPatients patient={patient} setPatient={setPatient} />;
-export default function AsynchronousSelectPatients({ patient, setPatient }) {
+export default function AsynchronousSelectPatients({ patient, handleChange }) {
 
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   const { data: pData, error: pErr } = useSWR(
     ["patients"],
-    patientAPI.fetchPatients
+    doctorAPI.fetchPatients
   );
-  const handleChange = (event, selectedValue) => {
-    setPatient(selectedValue);
-  };
+  
   React.useEffect(() => {
     let active = true;
 
@@ -56,7 +54,7 @@ export default function AsynchronousSelectPatients({ patient, setPatient }) {
         setOpen(false);
       }}
       getOptionSelected={(option, value) =>
-        option.user.first_name === value.user.first_name
+        option.user.first_name === value.user.first_name//
       }
       getOptionLabel={(option) => {
         if (option?.type)
