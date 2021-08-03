@@ -20,6 +20,11 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import AsynchronousSelectPatients from '../../components/AsynchronousSelectPatients';
+import AsynchronousSelectMr from '../../components/AsynchronousSelectMr';
+import { doctorAPI } from "lib/api/doctor";
+import {extractErrorMsg} from "lib/utils/helpers"
+import { toast } from "react-toastify";
 
 const styles = makeStyles((theme) => ({
   formControl: {
@@ -60,24 +65,6 @@ const styles = makeStyles((theme) => ({
 }));
 export default function MedicalExam() {
   const classes = styles();
-  const currencies = [
-    {
-      value: 'USD',
-      label: '$',
-    },
-    {
-      value: 'houssem',
-      label: 'houssem',
-    },
-    {
-      value: 'BTC',
-      label: '฿',
-    },
-    {
-      value: 'JPY',
-      label: '¥',
-    },
-  ];
   const SkinProblems = [
     {
       value: 'skin infection',
@@ -193,10 +180,7 @@ export default function MedicalExam() {
       value: 'stool',
       label: 'stool',
     }, 
-    {
-      value: 'pain on rest',
-      label: 'pain on rest',
-    },
+    
     {
       value: 'rectal bleeding',
       label: 'rectal bleeding',
@@ -231,6 +215,7 @@ export default function MedicalExam() {
   
   //---------------------------
   const initialState={
+  
     patient: "",
     date: "",
     wieght: "",
@@ -266,7 +251,12 @@ export default function MedicalExam() {
   const [values, setValues] = React.useState({
     ...initialState
   });
-  
+  const handlePatientChange = (event, selectedValue) => { 
+        setValues({
+          ...values,
+          patient:selectedValue.patient
+        });
+  };
   //------------------------
   //preserve the initial state for canceling
   const handleChange = (event) => {
@@ -277,11 +267,22 @@ export default function MedicalExam() {
       });
     }
   };
-  const postData = () => {
-    axios.post(`https://60fbca4591156a0017b4c8a7.mockapi.io/fakeData`, {
-            values
-        })
-}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //Reshape the object to send
+   console.log('submited')
+    const { data:resData, status } = await doctorAPI.createMedicalExam(values);
+    console.log(resData)
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(resData);
+      errors.map((error) => {
+        toast.error(error);
+      });
+    } else {
+      toast.success("Medical Exam created successfully!");
+    }
+    
+  };
 const cancel = () => {
   setValues({
     ...initialState,
@@ -297,24 +298,7 @@ const cancel = () => {
           <Card>
             <CardBody>
               <GridContainer>
-            <FormControl variant="outlined" className={classes.formControl} style={{width:"100%"}} >
-        <InputLabel id="demo-simple-select-outlined-label" >Patients</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          //value={age}
-          onChange={handleChange}
-          value={values.patient}
-          name="patient"
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
+              <AsynchronousSelectMr patient={values.patient_date} handleChange={handlePatientChange} />
       </GridContainer>
         
             <GridContainer>
@@ -322,6 +306,7 @@ const cancel = () => {
                 <GridItem xs={12} sm={12} md={3}>
                 <TextField
              id="date"
+             required 
              variant="outlined"
              name="date"
              label="Date"
@@ -337,21 +322,24 @@ const cancel = () => {
                 <GridItem xs={12} sm={12} md={3}>
                 <TextField id="outlined-basic" label="Weight kg" variant="outlined" type="number" name="wieght" onChange={handleChange} 
                  value={values.wieght}
+                 required 
                 />         
                  </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                 <TextField id="outlined-basic" label="Height m" variant="outlined" type="number" name="height" onChange={handleChange} 
                 value={values.height}
-
+                required 
                 /> 
                 </GridItem>
               </GridContainer>
               <GridContainer>
                 <GridItem xs={6} sm={12} md={6}>
-                <TextField name="hearing_right" label="Hearing right" variant="outlined" fullWidth onChange={handleChange} value={values.hearing_right} /> 
+                <TextField name="hearing_right" label="Hearing right" variant="outlined" fullWidth onChange={handleChange} value={values.hearing_right}
+                 /> 
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField name="hearing_left" label="Hearing left" variant="outlined" fullWidth onChange={handleChange} value={values.hearing_left}/> 
+                <TextField name="hearing_left" label="Hearing left" variant="outlined" fullWidth onChange={handleChange} value={values.hearing_left}
+                 /> 
                 </GridItem>
               </GridContainer>
               
@@ -647,7 +635,7 @@ const cancel = () => {
               </GridContainer>
             </CardBody>
             <div className={classes.btnDiv}>
-                <Button variant="contained" color="primary" size="large" className={classes.btn} onClick={postData} type='submit'>
+                <Button variant="contained" color="primary" size="large" className={classes.btn} onClick={handleSubmit} type='submit'>
                 Create
                </Button>
                         

@@ -187,7 +187,7 @@ const handleChange = (event) => {
                 <GridItem xs={6} sm={12} md={6}>
                 <TextField
           name="biometric"
-          label="Biometric"
+          label={values.patient_data.user.first_name}
           fullWidth
           onChange={handleChange}
           value={values.biometric}
