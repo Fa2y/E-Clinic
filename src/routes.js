@@ -40,21 +40,34 @@ import MedicalRecord from "views/TableList/MedicalRecord";
 import MedicalExam from "views/TableList/MedicalExam";
 import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-
+import Patients from "views/TableList/patients";
+import testSelect from "views/TableList/testSelect";
+import FetchMedicalRecord from "views/TableList/FetchMedicalRecord";
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import PanToolIcon from '@material-ui/icons/PanTool';
 const dashboardRoutes = [
   {
     path: "/MedicalRecord",
-    name: "Medical record",
+    name: "Create medical record",
     rtlName: "قائمة الجدول",
-    icon:  FileCopyIcon,
+    icon:  CreateNewFolderIcon,
     component: MedicalRecord,
     layout: "/admin",
   },
   {
-    path: "/MecicalExam",
-    name: "Medical exam",
+    path: "/FetchMedicalRecord",
+    name: "Display medical record",
     rtlName: "قائمة الجدول",
-    icon: RemoveRedEyeIcon,
+    icon:  RemoveRedEyeIcon,
+    component: FetchMedicalRecord,
+    layout: "/admin",
+  },
+  
+  {
+    path: "/MecicalExam",
+    name: "Create medical exam",
+    rtlName: "قائمة الجدول",
+    icon: PanToolIcon,
     component: MedicalExam,
     layout: "/admin",
   },
@@ -72,6 +85,22 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component: UserProfile,
+    layout: "/admin",
+  },
+  {
+    path: "/patients",
+    name: "test fetching patients",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component: Patients,
+    layout: "/admin",
+  },
+  {
+    path: "/testSelect",
+    name: "test",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component: testSelect,
     layout: "/admin",
   },
   
