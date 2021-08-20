@@ -27,6 +27,7 @@ import Language from "@material-ui/icons/Language";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
+import AppointmentCreate from "views/Appointment/CreateForm.js"
 import TableList from "views/TableList/TableList.js";
 import Typography from "views/Typography/Typography.js";
 import Icons from "views/Icons/Icons.js";
@@ -72,7 +73,14 @@ const dashboardRoutes = [
     component: UserProfile,
     layout: "/admin",
   },
-  
+  {
+    path: "/appointment",
+    name: "Create Appointment",
+    rtlName: "قائمة الجدول",
+    icon: GroupIcon,
+    component: AppointmentCreate,
+    layout: "/admin",
+  },
   
   /*
   {
