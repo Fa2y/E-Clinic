@@ -7,16 +7,15 @@ import useSWR from "swr";
 import { doctorAPI } from "../lib/api/doctor";
 
 // <AsynchronousSelectPatients patient={patient} setPatient={setPatient} />;
-export default function AsynchronousSelectMr({ patient, handleChange }) {
-
+export default function PatientName({ patient, handleChange,name }) {
+  const[userData,setuserData]   =React.useState();
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   const { data: pData, error: pErr } = useSWR(
     ["patients"],
-    doctorAPI.fetchMedicalRecord
+    doctorAPI.fetchPatients
   );
-  
   React.useEffect(() => {
     let active = true;
 
@@ -54,11 +53,11 @@ export default function AsynchronousSelectMr({ patient, handleChange }) {
         setOpen(false);
       }}
       getOptionSelected={(option, value) =>
-        option.patient_data.user.first_name === option.patient_data.user.first_name
+        option.user.first_name === value.user.first_name
       }
       getOptionLabel={(option) => {
-         if (option?.id)
-          return `${option?.patient_data.type} (${option?.patient_data.education_level}): ${option?.patient_data.user.first_name} ${option?.patient_data.user.last_name}`;
+        if (option?.type)
+          return `${option?.user?.first_name} ${option?.user?.last_name}`;
       }}
       options={options}
       loading={loading}

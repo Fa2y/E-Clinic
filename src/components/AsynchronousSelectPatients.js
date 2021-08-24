@@ -16,7 +16,6 @@ export default function AsynchronousSelectPatients({ patient, handleChange }) {
     ["patients"],
     doctorAPI.fetchPatients
   );
-  
   React.useEffect(() => {
     let active = true;
 
@@ -54,7 +53,7 @@ export default function AsynchronousSelectPatients({ patient, handleChange }) {
         setOpen(false);
       }}
       getOptionSelected={(option, value) =>
-        option.user.first_name === value.user.first_name//
+        option.user.first_name === value.user.first_name
       }
       getOptionLabel={(option) => {
         if (option?.type)
