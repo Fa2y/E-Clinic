@@ -37,7 +37,7 @@ import CreateMedicalRecord from 'views/DoctorList/CreateMedicalRecord';
 import CreateMedicalExam from 'views/DoctorList/CreateMedicalExam';
 import FetchMedicalRecord from 'views/DoctorList/FetchMedicalRecord';
 import Statistics from 'views/DoctorList/Statistics';
-// import MedicalExam from 'views/DoctorList/MedicalExam';
+import Appointment from 'views/DoctorList/Appointment';
 
 export const adminDashboardRoutes = [
   {
@@ -112,7 +112,7 @@ export const doctorDashboardRoutes = [
     name: 'Appointments',
     rtlName: 'قائمة الجدول',
     icon: AccessTimeIcon,
-    component: Statistics,
+    component: Appointment,
     layout: '/doctor',
   },
 ];

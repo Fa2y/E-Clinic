@@ -67,7 +67,6 @@ export default function ListePatient() {
         patient.user.first_name,
         patient.user.last_name,
         patient.user.email,
-        patient.user.date_joined,
         `${patient.type} : ${patient.education_level}`,
       ]);
       setPatients(data);

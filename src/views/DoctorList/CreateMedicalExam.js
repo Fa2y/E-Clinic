@@ -28,12 +28,12 @@ export default function CreateMedicalExam() {
   const handlePatientChange = (event, selectedValue) => {
     setPatient({
       ...patient,
-      patient: selectedValue.patient_data.pid,
-      first_name: selectedValue.patient_data.user.first_name,
-      last_name: selectedValue.patient_data.user.last_name,
-      date_of_birth: selectedValue.patient_data.user.date_of_birth,
-      education_level: selectedValue.patient_data.education_level,
-      type: selectedValue.patient_data.type,
+      patient: selectedValue?.patient_data.pid,
+      first_name: selectedValue?.patient_data.user.first_name,
+      last_name: selectedValue?.patient_data.user.last_name,
+      date_of_birth: selectedValue?.patient_data.user.date_of_birth,
+      education_level: selectedValue?.patient_data.education_level,
+      type: selectedValue?.patient_data.type,
     });
   };
   return (

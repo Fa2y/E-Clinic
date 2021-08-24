@@ -42,7 +42,7 @@ export default function PatientInfo(props) {
     setValues({
       ...values,
       patient_data: selectedValue,
-      patient: selectedValue.pid,
+      patient: selectedValue?.pid,
     });
     props.handleClick(values['patient'], 'patient');
   };

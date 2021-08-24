@@ -51,7 +51,11 @@ export default function TableList() {
   const [patients, setPatients] = useState([]);
   const [deletedPatient, setDeletedPatient] = useState('');
 
-  const { data: pData, error: pErr } = useSWR([''], patientAPI.fetchPatients);
+  const {
+    data: pData,
+    error: pErr,
+    mutate,
+  } = useSWR([''], patientAPI.fetchPatients);
 
   useEffect(() => {
     if (!pErr && pData) {
@@ -73,9 +77,11 @@ export default function TableList() {
 
   const handleApproave = (pid) => {
     patientAPI.editPatient(pid, { is_approved: true });
+    mutate(pData, true);
   };
   const handleDelete = (pid) => {
     patientAPI.deletePatient(pid);
+    mutate(pData, true);
     setOpenPopup(false);
   };
   return (
