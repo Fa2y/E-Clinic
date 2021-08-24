@@ -81,7 +81,7 @@ export default function Admin({ ...rest }) {
         logo={cliniquelogo}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
-        color="green"
+        color="blue"
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
       />
@@ -89,6 +89,7 @@ export default function Admin({ ...rest }) {
         <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
+          color="primary"
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...rest}
         />

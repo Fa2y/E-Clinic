@@ -23,6 +23,8 @@ import PanToolIcon from '@material-ui/icons/PanTool';
 import GroupIcon from '@material-ui/icons/Group';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import ArchiveIcon from '@material-ui/icons/Archive';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
 // core components/views for Admin layout
 import UserProfile from 'views/UserProfile/UserProfile';
@@ -34,6 +36,7 @@ import PatientRequests from 'views/AdminList/PatientRequests';
 import CreateMedicalRecord from 'views/DoctorList/CreateMedicalRecord';
 import CreateMedicalExam from 'views/DoctorList/CreateMedicalExam';
 import FetchMedicalRecord from 'views/DoctorList/FetchMedicalRecord';
+import Statistics from 'views/DoctorList/Statistics';
 // import MedicalExam from 'views/DoctorList/MedicalExam';
 
 export const adminDashboardRoutes = [
@@ -96,12 +99,20 @@ export const doctorDashboardRoutes = [
     component: CreateMedicalExam,
     layout: '/doctor',
   },
-  // {
-  //   path: '/MecicalExam',
-  //   name: 'Medical exam',
-  //   rtlName: 'قائمة الجدول',
-  //   icon: PanToolIcon,
-  //   component: MedicalExam,
-  //   layout: '/admin',
-  // },
+  {
+    path: '/Statistics',
+    name: 'Statistics',
+    rtlName: 'قائمة الجدول',
+    icon: EqualizerIcon,
+    component: Statistics,
+    layout: '/doctor',
+  },
+  {
+    path: '/Appointments',
+    name: 'Appointments',
+    rtlName: 'قائمة الجدول',
+    icon: AccessTimeIcon,
+    component: Statistics,
+    layout: '/doctor',
+  },
 ];

@@ -32,7 +32,7 @@ const switchRoutes = (
       }
       return null;
     })}
-    <Redirect from="/doctor" to="/doctor/FetchMedicalRecord" />
+    <Redirect from="/doctor" to="/doctor/MedicalRecord" />
   </Switch>
 );
 
@@ -81,7 +81,7 @@ export default function Doctor({ ...rest }) {
         logo={cliniquelogo}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
-        color="blue"
+        color="green"
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
       />
@@ -89,6 +89,7 @@ export default function Doctor({ ...rest }) {
         <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
+          color="info"
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...rest}
         />
