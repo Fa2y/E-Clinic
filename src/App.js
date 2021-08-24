@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import PrivateRoute from 'components/e-clinic/PrivateRoute';
 import Admin from 'layouts/Admin';
+import Doctor from 'layouts/Doctor';
 import SignUp from 'views/Auth/SignUp';
 import Login from 'views/Auth/Login';
 import PageNotFound from 'views/404NotFound';
@@ -56,7 +57,7 @@ function App() {
             />
             <PrivateRoute
               path="/doctor"
-              component={Admin}
+              component={Doctor}
               roles={['Doctor', 'Nurse']}
             />
             <PrivateRoute

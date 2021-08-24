@@ -6,10 +6,12 @@
   "dependencies": {
     "@material-ui/core": "4.11.4",
     "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
     "axios": "^0.21.1",
     "chartist": "0.10.1",
     "classnames": "2.3.1",
     "history": "5.0.0",
+    "material-ui-dropzone": "^3.5.0",
     "material-ui-phone-number": "^2.2.6",
     "perfect-scrollbar": "1.5.1",
     "prop-types": "15.7.2",
@@ -20,6 +22,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "react-swipeable-views": "0.13.9",
+    "react-to-print": "^2.13.0",
     "react-toastify": "^7.0.4",
     "swr": "^0.5.6"
   },

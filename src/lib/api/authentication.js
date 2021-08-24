@@ -35,6 +35,19 @@ const Auth = {
       return error.response;
     }
   },
+  logout: async () => {
+    const token = getToken();
+    try {
+      const response = await axios.post(`${SERVER_URL}/rest-auth/logout/`, {
+        headers: {
+          Authorization: `token ${encodeURIComponent(token)}`,
+        },
+      });
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
 
 export default Auth;

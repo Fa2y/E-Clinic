@@ -24,15 +24,19 @@ const extractErrorMsg = (data) => {
   if (typeof data === 'string') return data;
 
   const msgs = [];
-  Object.keys(data).forEach((key) => {
-    if (Array.isArray(data[key])) {
-      data[key].forEach((error) => {
-        msgs.push(`${key} : ${error}`);
-      });
-    } else {
-      msgs.push(`${key} : ${extractErrorMsg(data[key])}`);
-    }
-  });
+  if (data) {
+    Object.keys(data).forEach((key) => {
+      if (Array.isArray(data[key])) {
+        data[key].forEach((error) => {
+          msgs.push(`${key} : ${error}`);
+        });
+      } else {
+        msgs.push(`${key} : ${extractErrorMsg(data[key])}`);
+      }
+    });
+  } else {
+    return ['Unknown Error, please contact the admin.'];
+  }
   return msgs;
 };
 /**

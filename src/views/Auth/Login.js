@@ -60,35 +60,45 @@ const Login = () => {
   };
   const history = useHistory();
 
-  const { data: userData, error: userErr } = useSWR(['patients'], Auth.getUser);
+  const {
+    data: userData,
+    error: userErr,
+    mutate,
+  } = useSWR(['patients'], Auth.getUser);
 
   React.useEffect(() => {
     const token = getToken();
+    // console.log(userData);
+    // console.log(userData);
     if (redirect && token) {
       if (userData?.status < 200 || userData?.status > 299 || userErr) {
         const errors = extractErrorMsg(userData?.data);
         errors.map((parsedError) => toast.error(parsedError));
         if (userErr) toast.error(userErr);
-      } else {
-        toast.success('Redirecting...');
-        setRedirect(false);
+      } else if (userData?.data?.uid) {
+        toast.info('Redirecting...');
         setUser({ ...userData?.data, token });
-        switch (userData?.data?.role) {
-          case 'Admin':
-          case 'GRH':
-            history.push('/admin');
-            break;
-          case 'Doctor':
-          case 'Nurse':
-            history.push('/admin');
-            break;
-          default:
-            history.push('/patient');
-            break;
-        }
+        mutate({ ...userData?.data, token }, false);
+        setTimeout(() => {
+          setRedirect(false);
+          switch (userData?.data?.role) {
+            case 'Admin':
+            case 'GRH':
+              history.push('/admin');
+              break;
+            case 'Doctor':
+            case 'Nurse':
+              history.push('/doctor');
+              break;
+            default:
+              history.push('/patient');
+              break;
+          }
+        }, 1000);
       }
     }
-  }, [userData, userErr, redirect, history]);
+  }, [userData, userErr, redirect, history, mutate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data, status } = await Auth.login(values);
@@ -99,6 +109,7 @@ const Login = () => {
     } else {
       toast.success('Login successful');
       setUser({ token: data?.key });
+      mutate({ token: data?.key }, true);
       setRedirect(true);
       //   history.push('/login');
     }

@@ -10,7 +10,7 @@ import Navbar from 'components/Navbars/Navbar';
 import Footer from 'components/Footer/Footer';
 import Sidebar from 'components/Sidebar/Sidebar';
 
-import { adminDashboardRoutes } from 'routes.js';
+import { doctorDashboardRoutes } from 'routes.js';
 
 import styles from 'assets/jss/material-dashboard-react/layouts/adminStyle';
 
@@ -20,8 +20,8 @@ let ps;
 
 const switchRoutes = (
   <Switch>
-    {adminDashboardRoutes.map((prop) => {
-      if (prop.layout === '/admin') {
+    {doctorDashboardRoutes.map((prop) => {
+      if (prop.layout === '/doctor') {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -32,15 +32,15 @@ const switchRoutes = (
       }
       return null;
     })}
-    <Redirect from="/admin" to="/admin/ListePatient" />
+    <Redirect from="/doctor" to="/doctor/FetchMedicalRecord" />
   </Switch>
 );
 
 const useStyles = makeStyles(styles);
 
-export default function Admin({ ...rest }) {
+export default function Doctor({ ...rest }) {
+  const routes = doctorDashboardRoutes;
   // styles
-  const routes = adminDashboardRoutes;
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
@@ -81,7 +81,7 @@ export default function Admin({ ...rest }) {
         logo={cliniquelogo}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
-        color="green"
+        color="blue"
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
       />

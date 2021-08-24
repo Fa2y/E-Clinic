@@ -1,12 +1,19 @@
 /* eslint-disable import/prefer-default-export */
-import routes from 'routes';
+import { doctorDashboardRoutes, adminDashboardRoutes } from 'routes';
 
 export const useRouteName = () => {
-  let name = '';
-  routes.forEach((route) => {
-    if (window.location.href.indexOf(route.layout + route.path) !== -1) {
-      name = routes.rtlActive ? route.rtlName : route.name;
-    }
-  });
-  return name;
+  doctorDashboardRoutes.forEach((route) =>
+    window.location.href.indexOf(route.layout + route.path) !== -1 &&
+    doctorDashboardRoutes.rtlActive
+      ? route.rtlName
+      : route.name,
+  );
+  adminDashboardRoutes.forEach((route) =>
+    window.location.href.indexOf(route.layout + route.path) !== -1 &&
+    doctorDashboardRoutes.rtlActive
+      ? route.rtlName
+      : route.name,
+  );
+
+  return '';
 };

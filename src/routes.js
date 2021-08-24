@@ -17,18 +17,26 @@
 */
 // @material-ui/icons
 import Person from '@material-ui/icons/Person';
-
-// core components/views for Admin layout
-import UserProfile from 'views/UserProfile/UserProfile';
+import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye';
+import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
+import PanToolIcon from '@material-ui/icons/PanTool';
 import GroupIcon from '@material-ui/icons/Group';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import ArchiveIcon from '@material-ui/icons/Archive';
 
+// core components/views for Admin layout
+import UserProfile from 'views/UserProfile/UserProfile';
 import ListePatient from 'views/AdminList/ListePatient';
 import ArchivedPatients from 'views/AdminList/ArchivedPatients';
 import PatientRequests from 'views/AdminList/PatientRequests';
 
-const dashboardRoutes = [
+// core components/views for Doctor layout
+import CreateMedicalRecord from 'views/DoctorList/CreateMedicalRecord';
+import CreateMedicalExam from 'views/DoctorList/CreateMedicalExam';
+import FetchMedicalRecord from 'views/DoctorList/FetchMedicalRecord';
+// import MedicalExam from 'views/DoctorList/MedicalExam';
+
+export const adminDashboardRoutes = [
   {
     path: '/ListePatient',
     name: 'Liste des patients',
@@ -62,5 +70,38 @@ const dashboardRoutes = [
     layout: '/admin',
   },
 ];
+export const doctorDashboardRoutes = [
+  {
+    path: '/MedicalRecord',
+    name: 'Create medical record',
+    rtlName: 'قائمة الجدول',
+    icon: CreateNewFolderIcon,
+    component: CreateMedicalRecord,
+    layout: '/doctor',
+  },
+  {
+    path: '/FetchMedicalRecord',
+    name: 'Display medical record',
+    rtlName: 'قائمة الجدول',
+    icon: RemoveRedEyeIcon,
+    component: FetchMedicalRecord,
+    layout: '/doctor',
+  },
 
-export default dashboardRoutes;
+  {
+    path: '/CreateMedicalExam',
+    name: 'Create medical exam',
+    rtlName: 'قائمة الجدول',
+    icon: PanToolIcon,
+    component: CreateMedicalExam,
+    layout: '/doctor',
+  },
+  // {
+  //   path: '/MecicalExam',
+  //   name: 'Medical exam',
+  //   rtlName: 'قائمة الجدول',
+  //   icon: PanToolIcon,
+  //   component: MedicalExam,
+  //   layout: '/admin',
+  // },
+];

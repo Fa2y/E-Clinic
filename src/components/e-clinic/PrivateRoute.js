@@ -14,7 +14,6 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => (
           />
         );
       }
-      console.log(roles);
       // check if user match the specified role
       if (roles?.includes(getUser()?.role)) {
         // authorised so return component
