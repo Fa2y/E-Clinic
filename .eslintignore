@@ -3,4 +3,5 @@ documentation/
 build/
 src/assets/**
 src/components/**
-!src/components/e-clinic
+!src/components/e-clinic/**
+!src/components/e-clinic/*.js
