@@ -18,6 +18,8 @@ import Home from './views/Home';
 import About from './views/About';
 
 import 'assets/css/material-dashboard-react.css?v=1.10.0';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 function App() {
   return (

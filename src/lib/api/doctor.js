@@ -118,6 +118,39 @@ const doctorAPI = {
       return error.response;
     }
   },
+  fetchAppointments: async () => {
+    const token = getToken();
+    try {
+      const response = await axios.get(
+        `${SERVER_URL}/api-appointment/appointments/`,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  createAppointment: async (data) => {
+    const token = getToken();
+    try {
+      const response = await axios.post(
+        `${SERVER_URL}/api-appointment/appointments/`,
+        data,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
 
 export default doctorAPI;

@@ -10,7 +10,7 @@ import doctorAPI from 'lib/api/doctor';
 export default function AsynchronousSelectPatients({ patient, handleChange }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
-  const loading = open && options.length === 0;
+  const loading = open && options?.length === 0;
   const { data: pData, error: pErr } = useSWR(
     ['patients'],
     doctorAPI.fetchPatients,
@@ -52,7 +52,7 @@ export default function AsynchronousSelectPatients({ patient, handleChange }) {
         setOpen(false);
       }}
       getOptionSelected={(option, value) =>
-        option.user.first_name === value.user.first_name
+        option?.user?.first_name === value?.user?.first_name
       }
       getOptionLabel={(option) => {
         if (option?.type)
