@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Material Dashboard React - v1.10.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-// @material-ui/icons
 import Person from '@material-ui/icons/Person';
 import RemoveRedEyeIcon from '@material-ui/icons/RemoveRedEye';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
@@ -38,6 +20,11 @@ import CreateMedicalExam from 'views/DoctorList/CreateMedicalExam';
 import FetchMedicalRecord from 'views/DoctorList/FetchMedicalRecord';
 import Statistics from 'views/DoctorList/Statistics';
 import Appointment from 'views/DoctorList/Appointment';
+import DisplayMedicalRecord from 'views/DoctorList/DisplayMedRec';
+import DisplayMedExam from 'views/DoctorList/DisplayMedExam';
+import DisplayPatientMedicalRecord from 'views/DoctorList/DisplayPatientMedRec';
+import AccessibilityIcon from '@material-ui/icons/Accessibility';
+import DisplayPatientMedExam from 'views/DoctorList/DisplayPatientMedExm';
 
 export const adminDashboardRoutes = [
   {
@@ -83,11 +70,11 @@ export const doctorDashboardRoutes = [
     layout: '/doctor',
   },
   {
-    path: '/FetchMedicalRecord',
+    path: '/DisplayMedRec',
     name: 'Display medical record',
     rtlName: 'قائمة الجدول',
     icon: RemoveRedEyeIcon,
-    component: FetchMedicalRecord,
+    component: DisplayMedicalRecord,
     layout: '/doctor',
   },
 
@@ -97,6 +84,14 @@ export const doctorDashboardRoutes = [
     rtlName: 'قائمة الجدول',
     icon: PanToolIcon,
     component: CreateMedicalExam,
+    layout: '/doctor',
+  },
+  {
+    path: '/DisplayMedExam',
+    name: 'Display medical exam',
+    rtlName: 'قائمة الجدول',
+    icon: RemoveRedEyeIcon,
+    component: DisplayMedExam,
     layout: '/doctor',
   },
   {
@@ -113,6 +108,22 @@ export const doctorDashboardRoutes = [
     rtlName: 'قائمة الجدول',
     icon: AccessTimeIcon,
     component: Appointment,
+    layout: '/doctor',
+  },
+  {
+    path: '/DisplayPatientMedRec',
+    name: 'Patient medical record',
+    rtlName: 'قائمة الجدول',
+    icon: AccessibilityIcon,
+    component: DisplayPatientMedicalRecord,
+    layout: '/doctor',
+  },
+  {
+    path: '/DisplayPatientMedExm',
+    name: 'Patient medical exam',
+    rtlName: 'قائمة الجدول',
+    icon: AccessibilityIcon,
+    component: DisplayPatientMedExam,
     layout: '/doctor',
   },
 ];

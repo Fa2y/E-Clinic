@@ -47,6 +47,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ClinicalExamination(props) {
+  //today
+  var today = new Date(),
+    today_date =
+      today.getFullYear() +
+      '-' +
+      (today.getMonth() + 1) +
+      '-' +
+      today.getDate();
+  //------------------
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -67,6 +76,26 @@ export default function ClinicalExamination(props) {
       clinicalExam: event.target.value,
     });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { data: resData, status } = await doctorAPI.editMedicalRecord(
+      props?.patient,
+      today_date,
+      clinicalExam,
+    );
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(resData);
+      errors.map((error) => toast.error(error));
+    } else {
+      setValues(resData);
+      setEdited();
+      // setinitial(initialState);
+      toast.success('Clinical examination created successfully!');
+    }
+  };
+
   return (
     <div>
       <Card className={classes.root}>
@@ -103,10 +132,17 @@ export default function ClinicalExamination(props) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="primary" variant="contained">
             Cancel
           </Button>
-          <Button color="primary">Submit</Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleSubmit}
+            type="submit"
+          >
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

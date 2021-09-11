@@ -1,76 +1,75 @@
-import React, { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import { red } from '@material-ui/core/colors';
-import image from 'assets/img/ordonance.jpg';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import GridItem from 'components/Grid/GridItem.js';
-import GridContainer from 'components/Grid/GridContainer.js';
-import PrintIcon from '@material-ui/icons/Print';
-import OrientationPdf from './OrientationPdf';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import medicaments from 'Medical_constants/medicaments';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import MedicamentUse from 'components/e-clinic/Doctor/MedicamentUse';
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { makeStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import { red } from "@material-ui/core/colors";
+import image from "../../../assets/img/ordonance.jpg";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import PrintIcon from "@material-ui/icons/Print";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import medicaments  from "../../../Medical_constants/medicaments";
+import MedicamentUse from "../../e-clinic/Doctor/MedicamentUse";
+//import { intlFormat } from "date-fns/esm";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
   },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
+    transform: "rotate(180deg)",
   },
   avatar: {
     backgroundColor: red[500],
   },
   para: {
-    marginLeft: '2.5vh',
-    marginTop: '2vh',
+    marginLeft: "2.5vh",
+    marginTop: "2vh",
   },
   days: {
-    marginLeft: '-1vh',
+    marginLeft: "-1vh",
   },
   certificateContent: {
-    marginLeft: '2vh',
+    marginLeft: "2vh",
   },
   med: {
-    backgroundColor: '#F8F9F9',
+    backgroundColor: "#F8F9F9",
   },
   radio: {
-    marginLeft: '25%',
+    marginLeft: "25%",
+  },
+  meds: {
+    marginLeft: "2vh",
   },
 }));
 export default function Ordonance(props) {
@@ -84,23 +83,24 @@ export default function Ordonance(props) {
   var today = new Date(),
     today_date =
       today.getFullYear() +
-      '-' +
+      "-" +
       (today.getMonth() + 1) +
-      '-' +
+      "-" +
       today.getDate();
   //------------------
   const initialState = {
-    patient: '',
-    medicaments: [
+    patient: "",
+    date: today_date,
+    med: [
       {
-        date: today_date,
-        medicament: '',
-        duration: '',
-        nbPerDay: '',
-        time: '',
-        remarque: '',
+        medicament: "",
+        duration: "",
+        nbPerDay: "",
+        time: "",
+        remarque: "",
       },
     ],
+    sent: false,
   };
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -122,6 +122,22 @@ export default function Ordonance(props) {
       });
     }
   };
+
+  console.log(ordonance.med[1]);
+  const numbers = ordonance.med;
+  const listItems = numbers.map((number) => (
+    <Typography variant="body1" gutterBottom>
+      {number.medicament +
+        "  " +
+        number.duration +
+        "  " +
+        number.nbPerDay +
+        "  " +
+        number.time +
+        "  " +
+        number.remarque}
+    </Typography>
+  ));
 
   console.log(medicaments.name);
   return (
@@ -146,7 +162,7 @@ export default function Ordonance(props) {
             <DialogTitle
               id="form-dialog-title"
               align="center"
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             >
               Higher school of computer science sidi belabbes
             </DialogTitle>
@@ -160,22 +176,17 @@ export default function Ordonance(props) {
                 <GridItem xs={6} sm={12} md={6}>
                   <div>
                     <p>
-                      <strong>
-                        Patient :{' '}
-                        {props.patient.last_name +
-                          ' ' +
-                          props.patient.first_name}
-                      </strong>
+                      <strong>Patient :Benmammar Houssam</strong>
                     </p>
                     <p>
-                      <strong>Age : </strong>
+                      <strong>Age : 22</strong>
                     </p>
                   </div>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <div>
                     <p>
-                      <strong>Doctor :</strong>
+                      <strong>Doctor : Ahmed Benhamouda</strong>
                     </p>
                     <p>
                       <strong>Date : {ordonance.date}</strong>
@@ -184,10 +195,12 @@ export default function Ordonance(props) {
                 </GridItem>
               </GridContainer>
               <MedicamentUse
-                handleClick={(value, name) =>
-                  setAddMed({
-                    addMed: value,
-                  })
+                handleClick={(info) =>
+                  setOrdonance((prevState) => ({
+                    ...ordonance,
+                    med: [...prevState.med, info],
+                    sent: true,
+                  }))
                 }
               />
             </DialogContent>
@@ -207,44 +220,42 @@ export default function Ordonance(props) {
                 Cancel
               </Button>
             </DialogActions>
-            <div style={{ display: 'none' }}>
+            <div style={{ display: "none" }}>
               <div ref={componentRef}>
                 <h4 align="center">
                   <strong>
                     Higher school of computer science sidi belabbes
                   </strong>
+                  <br></br>
+                  <strong>المدرسة العليا للاعلام الالي سيدي بلعباس</strong>
                 </h4>
                 <h3 align="center">Medical prescription</h3>
                 <GridContainer>
-                  <div className={classes.certificateContent}>
-                    <p>To Whom It May Concern</p>
-                    <p>
-                      This is to certify that{' '}
-                      <strong>
-                        {' '}
-                        {props.patient.last_name +
-                          ' ' +
-                          props.patient.first_name}{' '}
-                        Aymen Djebbar
-                      </strong>
-                    </p>
-                    <p>
-                      Was seen in my clinic on <strong>{ordonance.date}</strong>{' '}
-                      with the following diagnosis :<br></br>
-                      <br></br>
-                      <strong>{ordonance.diagnosis}</strong>
-                    </p>
-                    <p>
-                      The patient requires <strong>{ordonance.days}</strong>{' '}
-                      days for to rest and heal.
-                      <br></br>
-                      <br></br>
-                      Seen by Dr :<strong> houssem</strong>
-                      <br></br>
-                      <br></br>
-                      Dr’s Signature
-                    </p>
-                  </div>
+                  <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>
+                          <strong>Patient : Benmammar Houssam</strong>
+                        </TableCell>
+                        <TableCell align="right">
+                          <strong>Doctor : Ahmed Benhamouda</strong>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>
+                          <strong>Age : 22</strong>
+                        </TableCell>
+                        <TableCell align="right">
+                          <strong>Date : {ordonance.date}</strong>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                  </Table>
+                </GridContainer>
+                <GridContainer>
+                  <div className={classes.meds}>{listItems}</div>
                 </GridContainer>
               </div>
             </div>

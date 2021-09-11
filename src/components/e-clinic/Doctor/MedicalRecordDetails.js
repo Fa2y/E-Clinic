@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
 // core components
-import GridItem from "components/Grid/GridItem.js";
-import GridContainer from "components/Grid/GridContainer.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
-import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
-import TextField from "components/controls/Input";
-import MenuItem from "@material-ui/core/MenuItem";
-import avatar from "assets/img/faces/marc.jpg";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
+import GridItem from 'components/Grid/GridItem.js';
+import GridContainer from 'components/Grid/GridContainer.js';
+import CustomInput from 'components/CustomInput/CustomInput.js';
+import Card from 'components/Card/Card.js';
+import CardHeader from 'components/Card/CardHeader.js';
+import CardAvatar from 'components/Card/CardAvatar.js';
+import CardBody from 'components/Card/CardBody.js';
+import CardFooter from 'components/Card/CardFooter.js';
+import TextField from 'components/controls/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import avatar from 'assets/img/faces/marc.jpg';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 const styles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -30,30 +30,30 @@ const styles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0",
+    color: 'rgba(255,255,255,.62)',
+    margin: '0',
+    fontSize: '14px',
+    marginTop: '0',
+    marginBottom: '0',
   },
   cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
+    color: '#FFFFFF',
+    marginTop: '0px',
+    minHeight: 'auto',
+    fontWeight: '300',
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
+    marginBottom: '3px',
+    textDecoration: 'none',
   },
   GridContainer: {
-    backgroundColor: "DodgerBlue",
+    backgroundColor: 'DodgerBlue',
   },
   btnDiv: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
   },
   divider: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
   },
   btn: {
     width: 200,
@@ -62,182 +62,191 @@ const styles = makeStyles((theme) => ({
 }));
 export default function MedicalRecordDetails(props) {
   const classes = styles();
+  //today
+  var today = new Date(),
+    today_date =
+      today.getFullYear() +
+      '-' +
+      (today.getMonth() + 1) +
+      '-' +
+      today.getDate();
+  //------------------
   const SkinProblems = [
     {
-      value: "skin infection",
-      label: "skin infection",
+      value: 'skin infection',
+      label: 'skin infection',
     },
   ];
   //----ophtamology
   const OPHTALMOLOGYPROBLEMS = [
     {
-      value: "tearing",
-      label: "tearing",
+      value: 'tearing',
+      label: 'tearing',
     },
     {
-      value: "pain",
-      label: "pain",
+      value: 'pain',
+      label: 'pain',
     },
     {
-      value: "eye spots",
-      label: "eye spots",
+      value: 'eye spots',
+      label: 'eye spots',
     },
   ];
   //orl
   const ORLPROBLEMS = [
     {
-      value: "whistling",
-      label: "whistling",
+      value: 'whistling',
+      label: 'whistling',
     },
     {
-      value: "repeated tonsillitis",
-      label: "repeated tonsillitis",
+      value: 'repeated tonsillitis',
+      label: 'repeated tonsillitis',
     },
     {
-      value: "epistaxis",
-      label: "epistaxis",
+      value: 'epistaxis',
+      label: 'epistaxis',
     },
     {
-      value: "rhinorrhea",
-      label: "rhinorrhea",
+      value: 'rhinorrhea',
+      label: 'rhinorrhea',
     },
   ];
   //---------------------locomotoproblems
   const LOCOMOTORPROLEMS = [
     {
-      value: "muscular",
-      label: "muscular",
+      value: 'muscular',
+      label: 'muscular',
     },
     {
-      value: "articular",
-      label: "articular",
+      value: 'articular',
+      label: 'articular',
     },
     {
-      value: "vertebral",
-      label: "vertebral",
+      value: 'vertebral',
+      label: 'vertebral',
     },
     {
-      value: "neurological",
-      label: "neurological",
+      value: 'neurological',
+      label: 'neurological',
     },
   ];
   //--------resperatpoir
   const RESPIRATORYPROBLEMS = [
     {
-      value: "cough",
-      label: "cough",
+      value: 'cough',
+      label: 'cough',
     },
     {
-      value: "dyspnea",
-      label: "dyspnea",
+      value: 'dyspnea',
+      label: 'dyspnea',
     },
     {
-      value: "expectoration",
-      label: "expectoration",
+      value: 'expectoration',
+      label: 'expectoration',
     },
     {
-      value: "chest pain",
-      label: "chest pain",
+      value: 'chest pain',
+      label: 'chest pain',
     },
   ];
   //cardio vascular--------------------
   const CARDIOVASCULARPROBLEMS = [
     {
-      value: "palpitations",
-      label: "palpitations",
+      value: 'palpitations',
+      label: 'palpitations',
     },
     {
-      value: "edema pain",
-      label: "edema pain",
+      value: 'edema pain',
+      label: 'edema pain',
     },
     {
-      value: "pain on walk",
-      label: "pain on walk",
+      value: 'pain on walk',
+      label: 'pain on walk',
     },
     {
-      value: "pain on rest",
-      label: "pain on rest",
+      value: 'pain on rest',
+      label: 'pain on rest',
     },
     {
-      value: "abdominal pain",
-      label: "abdominal pain",
+      value: 'abdominal pain',
+      label: 'abdominal pain',
     },
   ];
   //digestive problems--------------------
   const DIGESTIVEPROBLEMS = [
     {
-      value: "appetite problem",
-      label: "appetite problem",
+      value: 'appetite problem',
+      label: 'appetite problem',
     },
     {
-      value: "transit",
-      label: "transit",
+      value: 'transit',
+      label: 'transit',
     },
     {
-      value: "stool",
-      label: "stool",
+      value: 'stool',
+      label: 'stool',
     },
 
     {
-      value: "rectal bleeding",
-      label: "rectal bleeding",
+      value: 'rectal bleeding',
+      label: 'rectal bleeding',
     },
   ];
   //aptitude--------------------
   const APTITUDE = [
     {
       value: true,
-      label: "apt",
+      label: 'apt',
     },
     {
       value: false,
-      label: "inapt",
+      label: 'inapt',
     },
   ];
   //orientation causes
   const CAUSES = [
     {
-      value: "notice",
-      label: "notice",
+      value: 'notice',
+      label: 'notice',
     },
     {
-      value: "hospitalization",
-      label: "hospitalization",
+      value: 'hospitalization',
+      label: 'hospitalization',
     },
     {
-      value: "treatment",
-      label: "treatment",
+      value: 'treatment',
+      label: 'treatment',
     },
   ];
 
   //---------------------------
   const initialState = {
-    patient: "",
-    date: "",
-    wieght: "",
-    height: "",
-    hearing_right: "",
-    hearing_left: "",
-    visual_acuity_with_correction_left: "",
-    visual_acuity_with_correction_right: "",
-    visual_acuity_without_correction_left: "",
-    visual_acuity_without_correction_right: "",
-    skin_state: "",
-    skin_exam: "",
-    ophtalmological_state: "",
-    ophtalmological_exam: "",
-    respiratory_state: "",
-    respiratory_exam: "",
-    cardiovascular_state: "",
-    cardiovascular_exam: "",
-    digestive_state: "",
-    digestive_exam: "",
-    aptitude: "",
-    reason: "",
-    orl_state: "",
-    orl_exam: "",
-    locomotor_case: "",
-    locomotor_exam: "",
+    patient: '',
+    date: today_date,
+    wieght: '',
+    height: '',
+    hearing_right: '',
+    hearing_left: '',
+    visual_acuity_with_correction_left: '',
+    visual_acuity_with_correction_right: '',
+    visual_acuity_without_correction_left: '',
+    visual_acuity_without_correction_right: '',
+    skin_state: '',
+    skin_exam: '',
+    ophtalmological_state: '',
+    ophtalmological_exam: '',
+    respiratory_state: '',
+    respiratory_exam: '',
+    cardiovascular_state: '',
+    cardiovascular_exam: '',
+    digestive_state: '',
+    digestive_exam: '',
+    aptitude: '',
+    reason: '',
+    orl_state: '',
+    orl_exam: '',
+    locomotor_case: '',
+    locomotor_exam: '',
   };
   const [keyForm, setkey] = React.useState(0); //when i click cancel : state change so all components on the form will re_render
   const [values, setValues] = React.useState({
@@ -251,8 +260,8 @@ export default function MedicalRecordDetails(props) {
         ...values,
         [event.target.name]: event.target.value,
       });
-      let targetName = event.target.name
-     props.handleClick((values[targetName]), targetName);
+      let targetName = event.target.name;
+      props.handleClick(values[targetName], targetName);
     }
   };
   const cancel = () => {
@@ -263,6 +272,8 @@ export default function MedicalRecordDetails(props) {
       keyForm: keyForm + 1,
     });
   };
+  console.log(values.date)
+
   return (
     <div>
       <form key={keyForm}>
@@ -273,8 +284,8 @@ export default function MedicalRecordDetails(props) {
               required
               variant="outlined"
               name="date"
-              label="Date"
               type="date"
+              defaultValue={values.date}
               value={values.date}
               onChange={handleChange}
               className={classes.textField}
@@ -310,7 +321,9 @@ export default function MedicalRecordDetails(props) {
         </GridContainer>
         <GridContainer>
           <GridItem>
-            <h4><strong>Hearing problems</strong></h4>
+            <h4>
+              <strong>Hearing problems</strong>
+            </h4>
           </GridItem>
         </GridContainer>
         <GridContainer>
@@ -339,7 +352,9 @@ export default function MedicalRecordDetails(props) {
         <hr></hr>
         <GridContainer>
           <GridItem>
-            <h4><strong>Visaul problems</strong></h4>
+            <h4>
+              <strong>Visaul problems</strong>
+            </h4>
           </GridItem>
         </GridContainer>
         <GridContainer>
@@ -364,7 +379,7 @@ export default function MedicalRecordDetails(props) {
             />
           </GridItem>
         </GridContainer>
-
+        <br></br>
         <GridContainer>
           <GridItem xs={12} sm={12} md={6}>
             <TextField
@@ -391,7 +406,9 @@ export default function MedicalRecordDetails(props) {
         <hr></hr>
         <GridContainer>
           <GridItem>
-            <h4><strong>Skin,Orl,Cardiovascular problems....</strong></h4>
+            <h4>
+              <strong>Skin,Orl,Cardiovascular problems....</strong>
+            </h4>
           </GridItem>
         </GridContainer>
         <GridContainer>
@@ -641,7 +658,7 @@ export default function MedicalRecordDetails(props) {
             />
           </GridItem>
         </GridContainer>
-        </form>
+      </form>
     </div>
   );
 }

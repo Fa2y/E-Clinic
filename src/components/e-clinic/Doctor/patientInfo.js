@@ -45,6 +45,7 @@ export default function PatientInfo(props) {
       patient: selectedValue?.pid,
     });
     props.handleClick(values['patient'], 'patient');
+    props.handleClick(values['patient_data'], 'patient_data');
   };
   const handleChange = (event) => {
     if (event?.target) {

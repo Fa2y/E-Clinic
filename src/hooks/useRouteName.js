@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { doctorDashboardRoutes, adminDashboardRoutes } from 'routes';
 
 export const useRouteName = () => {
