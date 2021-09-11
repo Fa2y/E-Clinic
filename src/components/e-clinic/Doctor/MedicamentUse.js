@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import GridItem from 'components/Grid/GridItem.js';
 import GridContainer from 'components/Grid/GridContainer.js';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import medicaments from 'Medical_constants/medicaments';
+import medicaments  from '../../../Medical_constants/medicaments';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -36,22 +36,42 @@ export default function MedicamentUse(props) {
     time: '',
     remarque: '',
   };
-  const [add, setAdd] = React.useState(1);
+  const [keyForm, setkey] = React.useState(0); //when i click cancel : state change so all components on the form will re_render
   const [medInfo, setMedInfo] = React.useState(initialState);
+  const [medInfo2, setMedInfo2] = React.useState(initialState);
   const classes = useStyles();
   const updateMed = () => {
-    setAdd((prevAdd) => prevAdd + 1);
-    props.handleClick(('addMed', add));
+    setMedInfo2({
+      medicament: medInfo.medicament,
+      duration: medInfo.duration,
+      nbPerDay: medInfo.nbPerDay,
+      time: medInfo.time,
+      remarque: medInfo.remarque,
+      sent: true,
+    });
+    setMedInfo(initialState);
+    setkey((prevkey) => prevkey + 1);
+  };
+  useEffect(() => {
+    props.handleClick(medInfo2); // This is be executed when `medInfo2` state changes
+  }, [medInfo2]);
+  const handleChange = (event) => {
+    if (event?.target) {
+      setMedInfo({
+        ...medInfo,
+        [event.target.name]: event.target.value,
+      });
+    }
   };
   return (
-    <div>
+    <div key={keyForm}>
       <div className={classes.med}>
         <Autocomplete
           id="combo-box-demo"
           name="medicament"
-          style={{ marginBottom: '2%' }}
           onChange={(event, value) =>
             setMedInfo({
+              ...medInfo,
               medicament: value.name,
             })
           }
@@ -67,13 +87,16 @@ export default function MedicamentUse(props) {
             />
           )}
         />
+        <br></br>
         <GridContainer>
           <GridItem xs={6} sm={12} md={6}>
             <TextField
               variant="outlined"
               label={'Period : '}
               fullWidth
-              name="period"
+              name="duration"
+              onChange={handleChange}
+              value={medInfo.duration}
             />
           </GridItem>
           <GridItem xs={6} sm={12} md={6}>
@@ -83,36 +106,34 @@ export default function MedicamentUse(props) {
               label={'Number per day : '}
               fullWidth
               type="number"
-              //onChange={handleChange}
-              //value={ordonance.medicaments.nbPerDay}
+              onChange={handleChange}
+              value={medInfo.nbPerDay}
             />
           </GridItem>
         </GridContainer>
         <br></br>
-        <RadioGroup
-          row
-          aria-label="position"
-          name="position"
-          defaultValue="top"
-        >
+        <RadioGroup row aria-label="position" name="time" defaultValue="top">
           <div className={classes.radio}>
             <FormControlLabel
               value="before"
               control={<Radio color="primary" />}
               label="Before"
               labelPlacement="start"
+              onChange={handleChange}
             />
             <FormControlLabel
               value="during"
               control={<Radio color="primary" />}
               label="During"
               labelPlacement="start"
+              onChange={handleChange}
             />
             <FormControlLabel
               value="after"
               control={<Radio color="primary" />}
               label="After"
               labelPlacement="start"
+              onChange={handleChange}
             />
           </div>
         </RadioGroup>
@@ -120,11 +141,13 @@ export default function MedicamentUse(props) {
         <GridContainer>
           <GridItem xs={11}>
             <TextField
-              name="nbPerDay"
+              name="remarque"
               variant="outlined"
               label={'Remark : '}
               fullWidth
               type="number"
+              onChange={handleChange}
+              value={medInfo.remarque}
               //onChange={handleChange}
               //value={ordonance.medicaments.nbPerDay}
               multiline

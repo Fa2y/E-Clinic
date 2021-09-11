@@ -27,8 +27,8 @@ export default function TobacoConsumption(props) {
         ...historyValues,
         [event.target.name]: event.target.value,
       });
-      let targetName = event.target.name;
-      props.handleClick(historyValues[targetName], targetName);
+      // let targetName = event.target.name;
+      props.handleClick(event.target.value, event.target.name);
     }
   };
   const handleChangeChecked = (event) => {
@@ -37,8 +37,7 @@ export default function TobacoConsumption(props) {
         ...checkedValues,
         [event.target.name]: event.target.checked,
       });
-      let targetName = event.target.name;
-      props.handleClick(!checkedValues[targetName], targetName);
+      props.handleClick(!event.target.checked, event.target.name);
     }
   };
 

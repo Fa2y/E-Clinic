@@ -26,6 +26,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import age from 'Medical_constants/UsefulFunctions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -132,7 +133,9 @@ export default function Orientation(props) {
                       </strong>
                     </p>
                     <p>
-                      <strong>Age : </strong>
+                      <strong>
+                        Age : {age(props.patient.date_of_birth, today_date)}
+                      </strong>
                     </p>
                   </div>
                 </GridItem>
@@ -204,7 +207,9 @@ export default function Orientation(props) {
                     <TableHead>
                       <TableRow>
                         <TableCell>
-                          <strong>Age : 22</strong>
+                          <strong>
+                            Age : {age(props.patient.date_of_birth, today_date)}
+                          </strong>
                         </TableCell>
                         <TableCell align="right">
                           <strong>Date : {orientation.date}</strong>

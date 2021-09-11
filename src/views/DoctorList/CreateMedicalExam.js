@@ -3,6 +3,7 @@ import GridContainer from 'components/Grid/GridContainer';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import { Grid } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
 // core Components for Medical Exam
 import AsynchronousSelectMr from 'components/e-clinic/Doctor/AsynchronousSelectMr';
@@ -11,7 +12,7 @@ import ParaClinicalExamination from 'components/e-clinic/Doctor/ParaClinicalExam
 import Orientation from 'components/e-clinic/Doctor/Orientation';
 import Evacuation from 'components/e-clinic/Doctor/Evacuation';
 import Certificate from 'components/e-clinic/Doctor/Certificate';
-import Ordonance from 'components/e-clinic/Doctor/Ordonance';
+import MedOrdonance from 'components/e-clinic/Doctor/MedOrdonance';
 
 export default function CreateMedicalExam() {
   const initialState = {
@@ -25,6 +26,8 @@ export default function CreateMedicalExam() {
   const [patient, setPatient] = React.useState({
     ...initialState,
   });
+  const [showExams, setShowExams] = React.useState(false);
+  const [showBtn, setShowBtn] = React.useState(false);
   const handlePatientChange = (event, selectedValue) => {
     setPatient({
       ...patient,
@@ -35,6 +38,12 @@ export default function CreateMedicalExam() {
       education_level: selectedValue?.patient_data.education_level,
       type: selectedValue?.patient_data.type,
     });
+    setShowBtn(!showBtn);
+    setShowExams(false);
+  };
+  const newExam = () => {
+    setShowExams(true);
+    setShowBtn(false);
   };
   return (
     <div>
@@ -45,35 +54,49 @@ export default function CreateMedicalExam() {
               patient={patient.attribute}
               handleChange={handlePatientChange}
             />
-            <Grid
-              style={{
-                marginTop: '1%',
-                display: 'flex',
-                justifyContent: 'space-evenly',
-              }}
-              container
-              justifyContent="center"
-              spacing={2}
-            >
-              <Grid item>
-                <ClinicalExamination patient={patient} />
+            <br />
+            <div style={{ display: showBtn ? 'inline' : 'none' }}>
+              <Button
+                style={{ marginLeft: '30%' }}
+                variant="contained"
+                color="secondary"
+                size="large"
+                onClick={newExam}
+              >
+                <bold>CREATE NEW MEDICAL EXAM</bold>
+              </Button>
+            </div>
+            <div style={{ display: showExams ? 'inline' : 'none' }}>
+              <Grid
+                style={{
+                  marginTop: '1%',
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                }}
+                container
+                justifyContent="center"
+                spacing={2}
+              >
+                <Grid item>
+                  <ClinicalExamination patient={patient} />
+                </Grid>
+                <Grid item>
+                  <ParaClinicalExamination />
+                </Grid>
+                <Grid item>
+                  <Orientation patient={patient} />
+                </Grid>
+                <Grid item>
+                  <Evacuation patient={patient} />
+                </Grid>
+                <Grid item>
+                  <Certificate patient={patient} />
+                </Grid>
+                <Grid item>
+                  <MedOrdonance patient={patient} />
+                </Grid>
               </Grid>
-              <Grid item>
-                <ParaClinicalExamination />
-              </Grid>
-              <Grid item>
-                <Orientation patient={patient} />
-              </Grid>
-              <Grid item>
-                <Evacuation patient={patient} />
-              </Grid>
-              <Grid item>
-                <Certificate patient={patient} />
-              </Grid>
-              <Grid item>
-                <Ordonance patient={patient} />
-              </Grid>
-            </Grid>
+            </div>
           </CardBody>
         </Card>
       </GridContainer>

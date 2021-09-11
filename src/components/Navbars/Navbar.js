@@ -10,7 +10,7 @@ import Hidden from '@material-ui/core/Hidden';
 // @material-ui/icons
 import Menu from '@material-ui/icons/Menu';
 // hooks
-import { useRouteName } from 'hooks';
+import useRouteName from 'hooks';
 // core components
 import styles from 'assets/jss/material-dashboard-react/components/headerStyle';
 import Button from 'components/CustomButtons/Button';

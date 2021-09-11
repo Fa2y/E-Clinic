@@ -26,7 +26,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-
+import age from 'Medical_constants/UsefulFunctions';
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -144,7 +144,7 @@ export default function Evacuation(props) {
                     </p>
                     <p>
                       <strong>
-                        Age : {getAge(props.patient?.date_of_birth)}
+                        Age : {age(props.patient.date_of_birth, today_date)}
                       </strong>
                     </p>
                   </div>
@@ -229,7 +229,7 @@ export default function Evacuation(props) {
                       <TableRow>
                         <TableCell>
                           <strong>
-                            Age : {getAge(props.patient?.date_of_birth)}
+                            Age : {age(props.patient.date_of_birth, today_date)}
                           </strong>
                         </TableCell>
                         <TableCell align="right">

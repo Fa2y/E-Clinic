@@ -1,1 +1,3 @@
-export * from "./useRouteName";
+import useRouteName from './useRouteName';
+
+export default useRouteName;
