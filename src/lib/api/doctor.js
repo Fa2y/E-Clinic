@@ -151,6 +151,40 @@ const doctorAPI = {
       return error.response;
     }
   },
+  editAppointment: async (aid, data) => {
+    const token = getToken();
+    try {
+      const response = await axios.patch(
+        `${SERVER_URL}/api-appointment/appointments/${aid}/`,
+        data,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  approveMultiAppointments: async (data) => {
+    const token = getToken();
+    try {
+      const response = await axios.patch(
+        `${SERVER_URL}/api-appointment/appointments/approve/`,
+        data,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
 
 export default doctorAPI;

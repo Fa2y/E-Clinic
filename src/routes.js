@@ -83,19 +83,19 @@ export const doctorDashboardRoutes = [
     layout: '/doctor',
   },
   {
-    path: '/Statistics',
-    name: 'Statistics',
-    rtlName: 'قائمة الجدول',
-    icon: EqualizerIcon,
-    component: Statistics,
-    layout: '/doctor',
-  },
-  {
     path: '/Appointments',
     name: 'Appointments',
     rtlName: 'قائمة الجدول',
     icon: AccessTimeIcon,
     component: Appointment,
+    layout: '/doctor',
+  },
+  {
+    path: '/Statistics',
+    name: 'Statistics',
+    rtlName: 'قائمة الجدول',
+    icon: EqualizerIcon,
+    component: Statistics,
     layout: '/doctor',
   },
 ];

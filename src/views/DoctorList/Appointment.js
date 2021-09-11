@@ -189,7 +189,12 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { setAppliedFilter, numSelected, appointmentDates } = props;
+  const {
+    setAppliedFilter,
+    numSelected,
+    appointmentDates,
+    handleMultiApprove,
+  } = props;
   const flexContainer = {
     display: 'flex',
     flexDirection: 'row',
@@ -384,7 +389,7 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Multiple Approve">
-          <IconButton aria-label="approveMulti">
+          <IconButton onClick={handleMultiApprove} aria-label="approveMulti">
             <AssignmentTurnedInIcon />
           </IconButton>
         </Tooltip>
@@ -471,6 +476,7 @@ const CreateAppointmentModal = ({
   setOpenCreate,
   classes,
   mutate,
+  appointmentDates,
 }) => {
   const [date, setDate] = React.useState(null);
   const [values, setValues] = React.useState({
@@ -514,6 +520,35 @@ const CreateAppointmentModal = ({
       time: null,
     });
     return data;
+  };
+  const sameDay = (d1, d2) =>
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate();
+
+  const appointmentDayContent = (day) => {
+    let extraDot = null;
+    if (appointmentDates?.some((ele) => sameDay(ele, day))) {
+      extraDot = (
+        <div
+          style={{
+            height: '5px',
+            width: '5px',
+            borderRadius: '100%',
+            background: 'orange',
+            position: 'absolute',
+            top: 2,
+            right: 2,
+          }}
+        />
+      );
+    }
+    return (
+      <div>
+        {extraDot}
+        <span>{format(day, 'd')}</span>
+      </div>
+    );
   };
   return (
     <Modal
@@ -574,6 +609,7 @@ const CreateAppointmentModal = ({
                     onChange={(item) => setDate(item)}
                     date={date}
                     disabledDay={(day) => isSaturday(day) || isFriday(day)}
+                    dayContentRenderer={appointmentDayContent}
                   />
                 </GridItem>
                 <GridItem xs={6}>
@@ -596,9 +632,319 @@ const CreateAppointmentModal = ({
                 </GridItem>
               </Grid>
             </CardBody>
-            <CardFooter>
+            <CardFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Button color="info" onClick={handleSubmit}>
                 Submit
+              </Button>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </Modal>
+  );
+};
+
+const EditAppointmentModal = ({
+  openEdit,
+  setOpenEdit,
+  classes,
+  mutate,
+  appointmentDates,
+}) => {
+  const [date, setDate] = React.useState(new Date(openEdit.data?.date));
+  const d = new Date(openEdit.data?.date);
+  const [values, setValues] = React.useState({
+    aid: openEdit.data?.id,
+    patient_data: openEdit.data?.patient_data,
+    patient: openEdit.data?.patient,
+    description: openEdit.data?.description,
+    time: `${d.getHours().toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    })}:${d.getMinutes().toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    })}`,
+  });
+  React.useEffect(() => {
+    if (openEdit.toggle) {
+      const appointmentDate = new Date(openEdit.data?.date);
+      setValues({
+        aid: openEdit.data?.id,
+        patient_data: openEdit.data?.patient_data,
+        patient: openEdit.data?.patient,
+        description: openEdit.data?.description,
+        time: `${appointmentDate.getHours().toLocaleString('en-US', {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        })}:${appointmentDate.getMinutes().toLocaleString('en-US', {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        })}`,
+      });
+      setDate(appointmentDate);
+    }
+  }, [openEdit]);
+  const handleChange = (event) => {
+    setValues({ ...values, [event.target.name]: event.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const appointmentData = {
+      ...values,
+      date: `${moment(date).format('YYYY-MM-DD')} ${values.time}`,
+    };
+    delete appointmentData.time;
+    delete appointmentData.aid;
+    delete appointmentData.patient_data;
+    delete appointmentData.patient;
+    const { data, status } = await doctorAPI.editAppointment(
+      values?.aid,
+      appointmentData,
+    );
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors.map((error) => toast.error(error));
+      return [];
+    }
+    toast.success('Appointment Edited Successfully');
+    mutate({ data: [], status: 200 }, true);
+    setOpenEdit({ toggle: false, data: {} });
+    setValues({
+      patient_data: {},
+      patient: '',
+      description: '',
+      time: null,
+    });
+    return data;
+  };
+  const sameDay = (d1, d2) =>
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate();
+
+  const appointmentDayContent = (day) => {
+    let extraDot = null;
+    if (appointmentDates?.some((ele) => sameDay(ele, day))) {
+      extraDot = (
+        <div
+          style={{
+            height: '5px',
+            width: '5px',
+            borderRadius: '100%',
+            background: 'orange',
+            position: 'absolute',
+            top: 2,
+            right: 2,
+          }}
+        />
+      );
+    }
+    return (
+      <div>
+        {extraDot}
+        <span>{format(day, 'd')}</span>
+      </div>
+    );
+  };
+  return (
+    <Modal
+      open={openEdit.toggle}
+      onClose={() => {
+        setOpenEdit({ toggle: false, data: {} });
+        setValues({
+          patient_data: {},
+          patient: '',
+          description: false,
+          time: null,
+        });
+        setDate(null);
+      }}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+      style={{ overflow: 'scroll' }}
+    >
+      <GridContainer style={{ display: 'flex', justifyContent: 'center' }}>
+        <GridItem xs={6}>
+          <Card>
+            <CardHeader color="info">
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                  <h4 className={classes.cardTitleWhite}>Appointment</h4>
+                  <p className={classes.cardCategoryWhite}>Edit</p>
+                </div>
+                <IconButton
+                  color="danger"
+                  aria-label="Cancel"
+                  component="span"
+                  onClick={() => {
+                    setOpenEdit({ toggle: false, data: {} });
+                    setValues({
+                      patient_data: {},
+                      patient: '',
+                      description: false,
+                      time: null,
+                    });
+                    setDate(null);
+                  }}
+                >
+                  <CancelIcon />
+                </IconButton>
+              </div>
+            </CardHeader>
+            <CardBody>
+              <GridContainer>
+                <GridItem xs={12}>
+                  <TextField
+                    style={{ width: '100%' }}
+                    id="outlined-multiline-static"
+                    label="Patient"
+                    name="Patient"
+                    fullWidth
+                    value={`${openEdit.data?.patient_data?.type}(${openEdit.data?.patient_data?.education_level}):${openEdit.data?.patient_data?.user?.first_name} ${openEdit.data?.patient_data?.user?.last_name}`}
+                    onChange={handleChange}
+                    variant="outlined"
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={5}>
+                  <TextField
+                    style={{
+                      marginTop: '8%',
+                      // marginBottom: '%',
+                      width: '100%',
+                    }}
+                    id="outlined-multiline-static"
+                    label="Description"
+                    name="description"
+                    value={values.description}
+                    onChange={handleChange}
+                    multiline
+                    rows={4}
+                    columns={11}
+                    variant="outlined"
+                  />
+                </GridItem>
+              </GridContainer>
+              <Grid direction="row" alignItems="flex-start">
+                <GridItem xs={6}>
+                  <Calendar
+                    default={new Date()}
+                    onChange={(item) => setDate(item)}
+                    date={date}
+                    disabledDay={(day) => isSaturday(day) || isFriday(day)}
+                    dayContentRenderer={appointmentDayContent}
+                  />
+                </GridItem>
+                <GridItem xs={6}>
+                  <TextField
+                    id="time"
+                    label="Set Time"
+                    type="time"
+                    name="time"
+                    defaultValue="08:30"
+                    value={values.time}
+                    onChange={handleChange}
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      step: 300, // 5 min
+                    }}
+                  />
+                </GridItem>
+              </Grid>
+            </CardBody>
+            <CardFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button color="info" onClick={handleSubmit}>
+                Edit
+              </Button>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </Modal>
+  );
+};
+const CancelAppointmentModal = ({ openCancel, setOpenCancel, mutate }) => {
+  const classes = useStyles();
+  const [comment, setComment] = React.useState('');
+  const handleChange = (event) => {
+    setComment(event.target.value);
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { data, status } = await doctorAPI.editAppointment(openCancel?.aid, {
+      status: 'cancelled',
+      comment,
+    });
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors.map((error) => toast.error(error));
+      return [];
+    }
+    toast.success('Appointment Cancelled Successfully');
+    mutate({ data: [], status: 200 }, true);
+    setOpenCancel({ toggle: false, aid: '' });
+    setComment('');
+    return data;
+  };
+  return (
+    <Modal
+      open={openCancel.toggle}
+      onClose={() => {
+        setOpenCancel({ toggle: false, aid: '' });
+        setComment('');
+      }}
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
+      style={{ overflow: 'scroll' }}
+    >
+      <GridContainer style={{ display: 'flex', justifyContent: 'center' }}>
+        <GridItem xs={6}>
+          <Card>
+            <CardHeader color="info">
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                  <h4 className={classes.cardTitleWhite}>Appointment</h4>
+                  <p className={classes.cardCategoryWhite}>Edit</p>
+                </div>
+                <IconButton
+                  color="danger"
+                  aria-label="Cancel"
+                  component="span"
+                  onClick={() => {
+                    setOpenCancel({ toggle: false, aid: '' });
+                    setComment('');
+                  }}
+                >
+                  <CancelIcon />
+                </IconButton>
+              </div>
+            </CardHeader>
+            <CardBody>
+              <GridItem xs={12}>
+                <TextField
+                  id="comment"
+                  label="Cancel Comment"
+                  name="comment"
+                  value={comment}
+                  multiline
+                  rows={5}
+                  fullWidth
+                  onChange={handleChange}
+                  className={classes.textField}
+                  variant="outlined"
+                />
+              </GridItem>
+            </CardBody>
+            <CardFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button color="danger" onClick={handleSubmit}>
+                Cancel
               </Button>
             </CardFooter>
           </Card>
@@ -616,6 +962,11 @@ export default function Appointment() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openCreate, setOpenCreate] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState({ toggle: false, data: {} });
+  const [openCancel, setOpenCancel] = React.useState({
+    toggle: false,
+    aid: '',
+  });
 
   const [rows, setRows] = React.useState([]);
   const [appliedFilter, setAppliedFilter] = React.useState({ filter: false });
@@ -633,11 +984,27 @@ export default function Appointment() {
         errors.map((error) => toast.error(error));
         return [];
       }
-      setRows(data);
+      setRows(data.filter((row) => row?.status !== 'cancelled'));
       return data;
     }
     return [];
   }, [swrData, swrErr]);
+
+  const handleMultiApprove = async (e) => {
+    e.preventDefault();
+    const { data, status } = await doctorAPI.approveMultiAppointments({
+      aids: selected,
+    });
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors.map((error) => toast.error(error));
+      return [];
+    }
+    toast.success('Appointments Approved Successfully');
+    mutate({ data: [], status: 200 }, true);
+    setSelected([]);
+    return data;
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -695,6 +1062,27 @@ export default function Appointment() {
         openCreate={openCreate}
         classes={classes}
         mutate={mutate}
+        appointmentDates={rows?.map((ele) => {
+          const d = new Date(ele.date);
+          d.setHours(0, 0, 0, 0);
+          return d;
+        })}
+      />
+      <EditAppointmentModal
+        setOpenEdit={setOpenEdit}
+        openEdit={openEdit}
+        classes={classes}
+        mutate={mutate}
+        appointmentDates={rows?.map((ele) => {
+          const d = new Date(ele.date);
+          d.setHours(0, 0, 0, 0);
+          return d;
+        })}
+      />
+      <CancelAppointmentModal
+        setOpenCancel={setOpenCancel}
+        openCancel={openCancel}
+        mutate={mutate}
       />
       <Card>
         <CardHeader color="info">
@@ -719,6 +1107,7 @@ export default function Appointment() {
                 d.setHours(0, 0, 0, 0);
                 return d;
               })}
+              handleMultiApprove={handleMultiApprove}
             />
             <TableContainer>
               <Table
@@ -807,17 +1196,26 @@ export default function Appointment() {
                           </TableCell>
                           <TableCell>
                             <Tooltip title="Edit">
-                              <IconButton size="small">
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  setOpenEdit({ toggle: true, data: row })
+                                }
+                              >
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title="Cancel">
-                              <IconButton size="small">
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  setOpenCancel({ toggle: true, aid: row?.id })
+                                }
+                              >
                                 <CancelPresentationIcon />
                               </IconButton>
                             </Tooltip>
                           </TableCell>
-                          {/* <TableCell align="right">{row.protein}</TableCell> */}
                         </TableRow>
                       );
                     })}
