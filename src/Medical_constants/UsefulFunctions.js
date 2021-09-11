@@ -1,4 +1,4 @@
-function age(patient_date_birth, today_date) {
-    return ((today_date.substring(0, 4)) - (patient_date_birth.substring(0, 4)));
-  }
+function age(patientDataBirth, todayDate) {
+  return todayDate.substring(0, 4) - patientDataBirth.substring(0, 4);
+}
 export default age;

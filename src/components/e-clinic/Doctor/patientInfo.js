@@ -44,8 +44,8 @@ export default function PatientInfo(props) {
       patient_data: selectedValue,
       patient: selectedValue?.pid,
     });
-    props.handleClick(values['patient'], 'patient');
-    props.handleClick(values['patient_data'], 'patient_data');
+    props.handleClick(selectedValue?.pid, 'patient');
+    props.handleClick(selectedValue, 'patient_data');
   };
   const handleChange = (event) => {
     if (event?.target) {
@@ -53,8 +53,7 @@ export default function PatientInfo(props) {
         ...values,
         [event.target.name]: event.target.value,
       });
-      let targetName = event.target.name;
-      props.handleClick(values[targetName], targetName);
+      props.handleClick(event.target.value, event.target.name);
     }
   };
   return (
@@ -70,10 +69,11 @@ export default function PatientInfo(props) {
       <GridContainer>
         <GridItem>
           <h4>
-            <strong>Last name : </strong> {values.patient_data.user.last_name}
+            <strong>Last name : </strong> {values.patient_data?.user?.last_name}
           </h4>
           <h4>
-            <strong>First name : </strong> {values.patient_data.user.first_name}
+            <strong>First name : </strong>{' '}
+            {values.patient_data?.user?.first_name}
           </h4>
           <h4>
             <strong>University's name : </strong> Higher School of Computer
@@ -81,13 +81,13 @@ export default function PatientInfo(props) {
           </h4>
           <h4>
             <strong>Date of birth : </strong>
-            {values.patient_data.user.date_of_birth}
+            {values.patient_data?.user?.date_of_birth}
           </h4>
           <h4>
-            <strong>Adress : </strong> {values.patient_data.user.address}
+            <strong>Adress : </strong> {values.patient_data?.user?.address}
           </h4>
           <h4>
-            <strong>Level : </strong> {values.patient_data.education_level}
+            <strong>Level : </strong> {values.patient_data?.education_level}
           </h4>
         </GridItem>
       </GridContainer>
@@ -99,7 +99,7 @@ export default function PatientInfo(props) {
             </InputLabel>
             <Select
               name="bloodType"
-              value={values.bloodType}
+              value={values?.bloodType}
               onChange={handleChange}
             >
               {MedicalObjects.BLOODTYPE.map((option) => (

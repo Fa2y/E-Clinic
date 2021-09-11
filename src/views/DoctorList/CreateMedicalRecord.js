@@ -28,14 +28,11 @@ const useStyles = makeStyles(() => ({
 
 export default function CreateMedicalRecord() {
   const classes = useStyles();
-  //today
-  var today = new Date(),
-    today_date =
-      today.getFullYear() +
-      '-' +
-      (today.getMonth() + 1) +
-      '-' +
-      today.getDate();
+  // today
+  const today = new Date();
+  const todayDate = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
   //------------------
   const initialState = {
     patient_data: {
@@ -62,7 +59,7 @@ export default function CreateMedicalRecord() {
     bloodType: '',
     social_number: '',
     patient: '',
-    date: today_date,
+    date: todayDate,
     wieght: '',
     height: '',
     hearing_right: '',
@@ -90,10 +87,7 @@ export default function CreateMedicalRecord() {
   };
   const [values, setValues] = React.useState(initialState);
   const [keyForm, setkey] = React.useState(0); // when i click cancel : state change so all components on the form will re_render
-  const handleCancel = (e) => {
-    e.preventDefault();
-    setValues(initialState);
-  };
+
   const cancel = () => {
     setkey({
       keyForm: keyForm + 1,
@@ -103,16 +97,16 @@ export default function CreateMedicalRecord() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Reshape the object to send
+    // Reshape the object to send
+    // eslint-disable-next-line camelcase
     const { patient_data, ...data } = values;
-    console.log(data);
-    const { data: resData, status } = await doctorAPI.createMedicalRecord(data);
-    console.log(resData);
+    const { data: resData, status } = await doctorAPI.createMedicalRecord({
+      ...data,
+      patient: patient_data?.pid,
+    });
     if (status < 200 || status > 299) {
       const errors = extractErrorMsg(resData);
-      errors.map((error) => {
-        toast.error(error);
-      });
+      errors.map((error) => toast.error(error));
     } else {
       toast.success('Medical Record created successfully!');
     }

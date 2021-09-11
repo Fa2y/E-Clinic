@@ -9,13 +9,13 @@ export default function DisplayMedExam() {
   return (
     <div>
       <FetchClinicalExam />
-      <br></br>
-      <FetchOrientation/>
-      <br></br>
+      <br />
+      <FetchOrientation />
+      <br />
       <FetchEvacuation />
-      <br></br>
+      <br />
       <FetchCertificate />
-      <br></br>
+      <br />
       <FetchOrdonance />
     </div>
   );

@@ -17,14 +17,13 @@ import PatientRequests from 'views/AdminList/PatientRequests';
 // core components/views for Doctor layout
 import CreateMedicalRecord from 'views/DoctorList/CreateMedicalRecord';
 import CreateMedicalExam from 'views/DoctorList/CreateMedicalExam';
-import FetchMedicalRecord from 'views/DoctorList/FetchMedicalRecord';
 import Statistics from 'views/DoctorList/Statistics';
 import Appointment from 'views/DoctorList/Appointment';
 import DisplayMedicalRecord from 'views/DoctorList/DisplayMedRec';
 import DisplayMedExam from 'views/DoctorList/DisplayMedExam';
-import DisplayPatientMedicalRecord from 'views/DoctorList/DisplayPatientMedRec';
-import AccessibilityIcon from '@material-ui/icons/Accessibility';
-import DisplayPatientMedExam from 'views/DoctorList/DisplayPatientMedExm';
+// import DisplayPatientMedicalRecord from 'views/DoctorList/DisplayPatientMedRec';
+// import AccessibilityIcon from '@material-ui/icons/Accessibility';
+// import DisplayPatientMedExam from 'views/DoctorList/DisplayPatientMedExm';
 
 export const adminDashboardRoutes = [
   {
@@ -110,20 +109,20 @@ export const doctorDashboardRoutes = [
     component: Appointment,
     layout: '/doctor',
   },
-  {
-    path: '/DisplayPatientMedRec',
-    name: 'Patient medical record',
-    rtlName: 'قائمة الجدول',
-    icon: AccessibilityIcon,
-    component: DisplayPatientMedicalRecord,
-    layout: '/doctor',
-  },
-  {
-    path: '/DisplayPatientMedExm',
-    name: 'Patient medical exam',
-    rtlName: 'قائمة الجدول',
-    icon: AccessibilityIcon,
-    component: DisplayPatientMedExam,
-    layout: '/doctor',
-  },
+  // {
+  //   path: '/DisplayPatientMedRec',
+  //   name: 'Patient medical record',
+  //   rtlName: 'قائمة الجدول',
+  //   icon: AccessibilityIcon,
+  //   component: DisplayPatientMedicalRecord,
+  //   layout: '/doctor',
+  // },
+  // {
+  //   path: '/DisplayPatientMedExm',
+  //   name: 'Patient medical exam',
+  //   rtlName: 'قائمة الجدول',
+  //   icon: AccessibilityIcon,
+  //   component: DisplayPatientMedExam,
+  //   layout: '/doctor',
+  // },
 ];

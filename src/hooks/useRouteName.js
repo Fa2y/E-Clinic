@@ -1,6 +1,6 @@
 import { doctorDashboardRoutes, adminDashboardRoutes } from 'routes';
 
-export const useRouteName = () => {
+const useRouteName = () => {
   doctorDashboardRoutes.forEach((route) =>
     window.location.href.indexOf(route.layout + route.path) !== -1 &&
     doctorDashboardRoutes.rtlActive
@@ -16,3 +16,5 @@ export const useRouteName = () => {
 
   return '';
 };
+
+export default useRouteName;

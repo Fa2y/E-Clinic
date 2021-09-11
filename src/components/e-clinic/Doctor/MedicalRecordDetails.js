@@ -261,7 +261,7 @@ export default function MedicalRecordDetails(props) {
         [event.target.name]: event.target.value,
       });
       let targetName = event.target.name;
-      props.handleClick(values[targetName], targetName);
+      props.handleClick(event.target.value, event.target.name);
     }
   };
   const cancel = () => {
@@ -272,7 +272,7 @@ export default function MedicalRecordDetails(props) {
       keyForm: keyForm + 1,
     });
   };
-  console.log(values.date)
+  console.log(values.date);
 
   return (
     <div>
