@@ -37,7 +37,7 @@ export default function TobacoConsumption(props) {
         ...checkedValues,
         [event.target.name]: event.target.checked,
       });
-      props.handleClick(!event.target.checked, event.target.name);
+      props.handleClick(event.target.checked, event.target.name);
     }
   };
 

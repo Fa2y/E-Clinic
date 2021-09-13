@@ -214,19 +214,47 @@ export default function DisplayMedicalRecord() {
       type: '',
       education_level: '',
     },
+    smoking: false,
+    chewing: false,
+    injection: false,
+    oldSmoker: false,
+    alcohol: false,
+    medication_consumption: false,
+    smokingNumberUnits: 0,
+    chewingNumberUnits: 0,
+    injectionNumbernits: 0,
+    ageFc: '',
+    duration: '',
+    medication: '',
+    familySituation: '',
+    bloodType: '',
+    social_number: '',
     patient: '',
-    social_number: 0,
-    biometric: '',
-    tobaco_consumption: '',
-    tobaco_taken_as: '',
-    number_units: '',
-    alcohol_consumption: '',
-    medication_consumption: '',
-    medications: '',
-    general_diseases: '',
-    surgical_intervention: '',
-    allergic_reaction: '',
-    congenital_condition: '',
+    date: '',
+    wieght: '',
+    height: '',
+    hearing_right: '',
+    hearing_left: '',
+    visual_acuity_with_correction_left: '',
+    visual_acuity_with_correction_right: '',
+    visual_acuity_without_correction_left: '',
+    visual_acuity_without_correction_right: '',
+    skin_state: '',
+    skin_exam: '',
+    ophtalmological_state: '',
+    ophtalmological_exam: '',
+    respiratory_state: '',
+    respiratory_exam: '',
+    cardiovascular_state: '',
+    cardiovascular_exam: '',
+    digestive_state: '',
+    digestive_exam: '',
+    aptitude: '',
+    reason: '',
+    orl_state: '',
+    orl_exam: '',
+    locomotor_case: '',
+    locomotor_exam: '',
   };
   const [values, setValues] = React.useState({
     ...initialState,
@@ -250,8 +278,8 @@ export default function DisplayMedicalRecord() {
   const [edited_values, setEdited] = React.useState();
   const handleChangeChecked = (event) => {
     if (event?.target) {
-      setCheckedValues({
-        ...checkedValues,
+      setValues({
+        ...values,
         [event.target.name]: event.target.checked,
       });
       setEdited({
@@ -281,7 +309,7 @@ export default function DisplayMedicalRecord() {
     e.preventDefault();
 
     const { data: resData, status } = await doctorAPI.editMedicalRecord(
-      values?.patient,
+      values?.id,
       edited_values,
     );
     if (status < 200 || status > 299) {
@@ -422,7 +450,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.smoking}
+                        checked={values.smoking}
                         onChange={handleChangeChecked}
                         name="smoking"
                         color="primary"
@@ -457,7 +485,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.oldSmoker}
+                        checked={values.oldSmoker}
                         onChange={handleChangeChecked}
                         name="oldSmoker"
                         color="primary"
@@ -482,7 +510,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.chewing}
+                        checked={values.chewing}
                         onChange={handleChangeChecked}
                         name="chewing"
                         color="primary"
@@ -507,7 +535,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.injection}
+                        checked={values.injection}
                         onChange={handleChangeChecked}
                         name="injection"
                         color="primary"
@@ -532,7 +560,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.alcohol}
+                        checked={values.alcohol}
                         onChange={handleChangeChecked}
                         name="alcohol"
                         color="primary"
@@ -545,7 +573,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.alcohol}
+                        checked={values.medication_consumption}
                         onChange={handleChangeChecked}
                         name="medication_consumption"
                         color="primary"

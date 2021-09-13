@@ -134,7 +134,7 @@ export default function Orientation(props) {
                     </p>
                     <p>
                       <strong>
-                        Age : {age(props.patient.date_of_birth, today_date)}
+                        Age : {age(props?.patient?.date_of_birth, today_date)}
                       </strong>
                     </p>
                   </div>
@@ -208,7 +208,8 @@ export default function Orientation(props) {
                       <TableRow>
                         <TableCell>
                           <strong>
-                            Age : {age(props.patient.date_of_birth, today_date)}
+                            Age :{' '}
+                            {age(props?.patient?.date_of_birth, today_date)}
                           </strong>
                         </TableCell>
                         <TableCell align="right">
