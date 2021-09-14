@@ -8,6 +8,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AccessibilityIcon from '@material-ui/icons/Accessibility';
 
 // core components/views for Admin layout
 import UserProfile from 'views/UserProfile/UserProfile';
@@ -22,9 +23,11 @@ import Statistics from 'views/DoctorList/Statistics';
 import Appointment from 'views/DoctorList/Appointment';
 import DisplayMedicalRecord from 'views/DoctorList/DisplayMedRec';
 import DisplayMedExam from 'views/DoctorList/DisplayMedExam';
-// import DisplayPatientMedicalRecord from 'views/DoctorList/DisplayPatientMedRec';
-// import AccessibilityIcon from '@material-ui/icons/Accessibility';
 // import DisplayPatientMedExam from 'views/DoctorList/DisplayPatientMedExm';
+
+// core components/views for Patient layout
+import DisplayPatientMedicalRecord from 'views/PatientList/DisplayMedRec';
+import PatientAppointment from 'views/PatientList/Appointment';
 
 export const adminDashboardRoutes = [
   {
@@ -126,4 +129,23 @@ export const doctorDashboardRoutes = [
   //   component: DisplayPatientMedExam,
   //   layout: '/doctor',
   // },
+];
+
+export const patientDashboardRoutes = [
+  {
+    path: '/DisplayPatientMedRec',
+    name: 'Patient Medical Record',
+    rtlName: 'قائمة الجدول',
+    icon: AccessibilityIcon,
+    component: DisplayPatientMedicalRecord,
+    layout: '/patient',
+  },
+  {
+    path: '/Appointments',
+    name: 'Appointments',
+    rtlName: 'قائمة الجدول',
+    icon: AccessTimeIcon,
+    component: PatientAppointment,
+    layout: '/patient',
+  },
 ];

@@ -26,7 +26,7 @@ import {
   Toolbar,
   Typography,
   Paper,
-  Checkbox,
+  // Checkbox,
   IconButton,
   Tooltip,
   TextField,
@@ -45,15 +45,15 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
+// import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
+// import CancelIcon from '@material-ui/icons/Cancel';
 
 import { toast } from 'react-toastify';
 import { extractErrorMsg } from 'lib/utils/helpers';
-import doctorAPI from 'lib/api/doctor';
+import patientAPI from 'lib/api/patient';
 import useSWR from 'swr';
-import AsynchronousSelectPatients from 'components/e-clinic/Doctor/AsynchronousSelectPatients';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -83,10 +83,10 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'patient',
+    id: 'doctor',
     numeric: false,
     disablePadding: true,
-    label: 'Patient',
+    label: 'Doctor',
   },
   {
     id: 'description',
@@ -101,17 +101,16 @@ const headCells = [
     label: 'Approved',
   },
   { id: 'date', numeric: true, disablePadding: false, label: 'Date And Time' },
-  { id: 'actions', numeric: false, disablePadding: false, label: 'Actions' },
 ];
 
 function EnhancedTableHead(props) {
   const {
     classes,
-    onSelectAllClick,
+    // onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
+    // numSelected,
+    // rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -122,13 +121,13 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          <Checkbox
+          {/* <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             color="success"
             inputProps={{ 'aria-label': 'select all desserts' }}
-          />
+          /> */}
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -159,12 +158,12 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
+  // numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
+  // onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
+  // rowCount: PropTypes.number.isRequired,
 };
 
 const useToolbarStyles = makeStyles((theme) => ({
@@ -480,18 +479,9 @@ const CreateAppointmentModal = ({
 }) => {
   const [date, setDate] = React.useState(null);
   const [values, setValues] = React.useState({
-    patient_data: {},
-    patient: '',
     description: '',
     time: null,
   });
-  const handlePatientChange = (event, selectedValue) => {
-    setValues({
-      ...values,
-      patient: selectedValue?.pid ? selectedValue?.pid : '',
-      patient_data: selectedValue,
-    });
-  };
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
@@ -503,19 +493,18 @@ const CreateAppointmentModal = ({
       date: `${moment(date).format('YYYY-MM-DD')} ${values.time}`,
     };
     delete appointmentData.time;
-    delete appointmentData.patient_data;
-    const { data, status } = await doctorAPI.createAppointment(appointmentData);
+    const { data, status } = await patientAPI.requestAppointment(
+      appointmentData,
+    );
     if (status < 200 || status > 299) {
       const errors = extractErrorMsg(data);
       errors.map((error) => toast.error(error));
       return [];
     }
-    toast.success('Appointment Created Successfully');
+    toast.success('Appointment Requested Successfully');
     mutate({ data: [], status: 200 }, true);
     setOpenCreate(false);
     setValues({
-      patient_data: {},
-      patient: '',
       description: '',
       time: null,
     });
@@ -579,10 +568,6 @@ const CreateAppointmentModal = ({
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <AsynchronousSelectPatients
-                  patient={values.patient_data}
-                  handleChange={handlePatientChange}
-                />
                 <GridItem xs={12} sm={12} md={5}>
                   <TextField
                     style={{
@@ -699,7 +684,7 @@ const EditAppointmentModal = ({
     delete appointmentData.aid;
     delete appointmentData.patient_data;
     delete appointmentData.patient;
-    const { data, status } = await doctorAPI.editAppointment(
+    const { data, status } = await patientAPI.editAppointment(
       values?.aid,
       appointmentData,
     );
@@ -869,36 +854,14 @@ const EditAppointmentModal = ({
     </Modal>
   );
 };
-const CancelAppointmentModal = ({ openCancel, setOpenCancel, mutate }) => {
+const CancelAppointmentModal = ({ openCancel, setOpenCancel }) => {
   const classes = useStyles();
-  const [comment, setComment] = React.useState('');
-  const handleChange = (event) => {
-    setComment(event.target.value);
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    const { data, status } = await doctorAPI.editAppointment(openCancel?.aid, {
-      status: 'cancelled',
-      comment,
-    });
-    if (status < 200 || status > 299) {
-      const errors = extractErrorMsg(data);
-      errors.map((error) => toast.error(error));
-      return [];
-    }
-    toast.success('Appointment Cancelled Successfully');
-    mutate({ data: [], status: 200 }, true);
-    setOpenCancel({ toggle: false, aid: '' });
-    setComment('');
-    return data;
-  };
   return (
     <Modal
       open={openCancel.toggle}
       onClose={() => {
-        setOpenCancel({ toggle: false, aid: '' });
-        setComment('');
+        setOpenCancel({ toggle: false, comment: '' });
       }}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
@@ -911,15 +874,14 @@ const CancelAppointmentModal = ({ openCancel, setOpenCancel, mutate }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                   <h4 className={classes.cardTitleWhite}>Appointment</h4>
-                  <p className={classes.cardCategoryWhite}>Cancel</p>
+                  <p className={classes.cardCategoryWhite}>Cancel Comment</p>
                 </div>
                 <IconButton
                   color="danger"
                   aria-label="Cancel"
                   component="span"
                   onClick={() => {
-                    setOpenCancel({ toggle: false, aid: '' });
-                    setComment('');
+                    setOpenCancel({ toggle: false, comment: '' });
                   }}
                 >
                   <CancelIcon />
@@ -932,21 +894,15 @@ const CancelAppointmentModal = ({ openCancel, setOpenCancel, mutate }) => {
                   id="comment"
                   label="Cancel Comment"
                   name="comment"
-                  value={comment}
+                  value={openCancel?.comment}
                   multiline
                   rows={5}
                   fullWidth
-                  onChange={handleChange}
                   className={classes.textField}
                   variant="outlined"
                 />
               </GridItem>
             </CardBody>
-            <CardFooter style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button color="danger" onClick={handleSubmit}>
-                Cancel
-              </Button>
-            </CardFooter>
           </Card>
         </GridItem>
       </GridContainer>
@@ -965,7 +921,7 @@ export default function Appointment() {
   const [openEdit, setOpenEdit] = React.useState({ toggle: false, data: {} });
   const [openCancel, setOpenCancel] = React.useState({
     toggle: false,
-    aid: '',
+    comment: '',
   });
 
   const [rows, setRows] = React.useState([]);
@@ -974,7 +930,7 @@ export default function Appointment() {
     data: swrData,
     error: swrErr,
     mutate,
-  } = useSWR(['appointments'], doctorAPI.fetchAppointments);
+  } = useSWR(['appointments'], patientAPI.fetchAppointments);
   React.useEffect(() => {
     if (!swrErr && swrData) {
       const { data, status } = swrData;
@@ -984,7 +940,7 @@ export default function Appointment() {
         errors.map((error) => toast.error(error));
         return [];
       }
-      setRows(data.filter((row) => row?.status !== 'cancelled'));
+      setRows(data); // .filter((row) => row?.status !== 'cancelled')
       return data;
     }
     return [];
@@ -992,7 +948,7 @@ export default function Appointment() {
 
   const handleMultiApprove = async (e) => {
     e.preventDefault();
-    const { data, status } = await doctorAPI.approveMultiAppointments({
+    const { data, status } = await patientAPI.approveMultiAppointments({
       aids: selected,
     });
     if (status < 200 || status > 299) {
@@ -1023,25 +979,25 @@ export default function Appointment() {
     setSelected([]);
   };
 
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+  // const handleClick = (event, id) => {
+  //   const selectedIndex = selected.indexOf(id);
+  //   let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected?.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, id);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected?.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1),
+  //     );
+  //   }
 
-    setSelected(newSelected);
-  };
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -1096,7 +1052,7 @@ export default function Appointment() {
             color="primary"
             onClick={() => setOpenCreate(true)}
           >
-            Create Appointment
+            Request an Appointment
           </Button>
           <Paper className={classes.paper}>
             <EnhancedTableToolbar
@@ -1156,9 +1112,9 @@ export default function Appointment() {
                       page * rowsPerPage,
                       page * rowsPerPage + rowsPerPage,
                     )
-                    .map((row, index) => {
+                    .map((row) => {
                       const isItemSelected = isSelected(row.id);
-                      const labelId = `enhanced-table-checkbox-${index}`;
+                      // const labelId = `enhanced-table-checkbox-${index}`;
 
                       return (
                         <TableRow
@@ -1175,7 +1131,7 @@ export default function Appointment() {
                           selected={isItemSelected}
                         >
                           <TableCell padding="checkbox">
-                            <Checkbox
+                            {/* <Checkbox
                               color="green"
                               checked={isItemSelected && !row?.approved}
                               disabled={row?.approved}
@@ -1183,38 +1139,45 @@ export default function Appointment() {
                                 if (!row?.approved) handleClick(event, row.id);
                               }}
                               inputProps={{ 'aria-labelledby': labelId }}
-                            />
+                            /> */}
                           </TableCell>
 
-                          <TableCell align="left">{`${row?.patient_data?.type}(${row?.patient_data?.education_level}):${row?.patient_data?.user?.first_name} ${row?.patient_data?.user?.last_name}`}</TableCell>
+                          <TableCell align="left">{`Dr.${row?.doctor_data?.last_name} ${row?.doctor_data?.first_name}`}</TableCell>
                           <TableCell align="left">{row?.description}</TableCell>
-                          <TableCell align="center">
-                            {row?.approved ? <CheckIcon /> : <CloseIcon />}
+                          <TableCell align="left">
+                            {/* eslint-disable-next-line no-nested-ternary */}
+                            {row?.status !== 'cancelled' ? (
+                              row?.approved ? (
+                                <CheckIcon />
+                              ) : (
+                                <CloseIcon />
+                              )
+                            ) : (
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'end',
+                                }}
+                              >
+                                <Tooltip title="See Refusal Comment">
+                                  <IconButton
+                                    onClick={() =>
+                                      setOpenCancel({
+                                        toggle: true,
+                                        comment: row?.comment,
+                                      })
+                                    }
+                                  >
+                                    <CancelIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <small>cancelled</small>
+                              </div>
+                            )}
                           </TableCell>
                           <TableCell align="left">
                             {moment(row?.date).format('DD MMMM YYYY HH:mm')}
-                          </TableCell>
-                          <TableCell>
-                            <Tooltip title="Edit">
-                              <IconButton
-                                size="small"
-                                onClick={() =>
-                                  setOpenEdit({ toggle: true, data: row })
-                                }
-                              >
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Cancel">
-                              <IconButton
-                                size="small"
-                                onClick={() =>
-                                  setOpenCancel({ toggle: true, aid: row?.id })
-                                }
-                              >
-                                <CancelPresentationIcon />
-                              </IconButton>
-                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       );

@@ -1,81 +1,81 @@
 /* eslint-disable camelcase */
 import React from 'react';
-// @material-ui/core components
-import { makeStyles } from '@material-ui/core/styles';
-// core components
-import Button from '@material-ui/core/Button';
+//  @material-ui/core components
+//  import { makeStyles } from '@material-ui/core/styles';
+//  core components
+//  import Button from '@material-ui/core/Button';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
 import CardFooter from 'components/Card/CardFooter';
-// import doctorAPI from 'lib/api/doctor';
-// import { extractErrorMsg } from 'lib/utils/helpers';
-// import { toast } from 'react-toastify';
-import AsynchronousSelectMr from 'components/e-clinic/Doctor/AsynchronousSelectMr';
-import FetchTobacoConsumption from 'components/e-clinic/Doctor/DisplayMedRec/FetchTobacoConsumption';
-import InputLabel from '@material-ui/core/InputLabel';
-// core components
+//  import doctorAPI from 'lib/api/doctor';
+//  import { extractErrorMsg } from 'lib/utils/helpers';
+//  import { toast } from 'react-toastify';
+//  import AsynchronousSelectMr from 'components/e-clinic/Doctor/AsynchronousSelectMr';
+//  import FetchTobacoConsumption from 'components/e-clinic/Doctor/DisplayMedRec/FetchTobacoConsumption';
+//  import InputLabel from '@material-ui/core/InputLabel';
+//  core components
 import GridItem from 'components/Grid/GridItem';
 import TextField from 'components/controls/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import GridContainer from 'components/Grid/GridContainer';
-import MedicalObjects from 'Medical_constants/constants';
-import medRec from 'components/e-clinic/Doctor/medRec';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CardHeader from 'components/Card/CardHeader';
-import doctorAPI from 'lib/api/doctor';
-import { extractErrorMsg } from 'lib/utils/helpers';
-import { toast } from 'react-toastify';
+//  import MenuItem from '@material-ui/core/MenuItem';
+//  import FormControl from '@material-ui/core/FormControl';
+//  import Select from '@material-ui/core/Select';
+//  import MedicalObjects from 'Medical_constants/constants';
+//  import medRec from 'components/e-clinic/Doctor/medRec';
+//  import doctorAPI from 'lib/api/doctor';
+//  import { extractErrorMsg } from 'lib/utils/helpers';
+//  import { toast } from 'react-toastify';
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    // color: theme.palette.text.secondary,
-    whiteSpace: 'nowrap',
-    marginBottom: theme.spacing(1),
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
-  },
-  cardCategoryWhite: {
-    color: 'rgba(255,255,255,.62)',
-    margin: '0',
-    fontSize: '14px',
-    marginTop: '0',
-    marginBottom: '0',
-  },
-  cardTitleWhite: {
-    color: '#FFFFFF',
-    marginTop: '0px',
-    minHeight: 'auto',
-    fontWeight: '300',
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: '3px',
-    textDecoration: 'none',
-  },
-  btnDiv: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  btn: {
-    width: 200,
-    margin: 4,
-  },
-  formControl: {
-    minWidth: 120,
-    width: 250,
-  },
-}));
+//  const useStyles = makeStyles((theme) => ({
+//    paper: {
+//      padding: theme.spacing(1),
+//      textAlign: 'center',
+//      //  color: theme.palette.text.secondary,
+//      whiteSpace: 'nowrap',
+//      marginBottom: theme.spacing(1),
+//    },
+//    divider: {
+//      margin: theme.spacing(2, 0),
+//    },
+//    cardCategoryWhite: {
+//      color: 'rgba(255,255,255,.62)',
+//      margin: '0',
+//      fontSize: '14px',
+//      marginTop: '0',
+//      marginBottom: '0',
+//    },
+//    cardTitleWhite: {
+//      color: '#FFFFFF',
+//      marginTop: '0px',
+//      minHeight: 'auto',
+//      fontWeight: '300',
+//      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+//      marginBottom: '3px',
+//      textDecoration: 'none',
+//    },
+//    btnDiv: {
+//      display: 'flex',
+//      justifyContent: 'center',
+//    },
+//    btn: {
+//      width: 200,
+//      margin: 4,
+//    },
+//    formControl: {
+//      minWidth: 120,
+//      width: 250,
+//    },
+//  }));
 
 export default function DisplayPatientMedicalRecord() {
-  const classes = useStyles();
+  //  const classes = useStyles();
 
   return (
     <div>
-      <form key={keyForm}>
+      <form>
         <GridContainer>
           <Card>
             <CardHeader color="info">
@@ -121,7 +121,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={12} sm={12} md={4}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    //  label="Read Only"
                     defaultValue="Blood type : A+"
                     InputProps={{
                       readOnly: true,
@@ -131,7 +131,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={12} sm={12} md={4}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Familly situation : single"
                     InputProps={{
                       readOnly: true,
@@ -141,7 +141,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={12} sm={12} md={4}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Social number : 32"
                     InputProps={{
                       readOnly: true,
@@ -163,12 +163,12 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={6} sm={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Number unit : 10"
                     InputProps={{
                       readOnly: true,
@@ -178,7 +178,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Age of first cigarette : 18"
                     InputProps={{
                       readOnly: true,
@@ -200,7 +200,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="duration : 5 year"
                     InputProps={{
                       readOnly: true,
@@ -208,7 +208,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={6} sm={3}>
                   <FormControlLabel
@@ -226,7 +226,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Number unit : "
                     InputProps={{
                       readOnly: true,
@@ -234,7 +234,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={6} sm={3}>
                   <FormControlLabel
@@ -242,7 +242,7 @@ export default function DisplayPatientMedicalRecord() {
                     control={
                       <Checkbox
                         checked="false"
-                        onChange={handleChangeChecked}
+                        // onChange={handleChangeChecked}
                         name="injection"
                         color="primary"
                       />
@@ -253,7 +253,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Number unit : "
                     InputProps={{
                       readOnly: true,
@@ -261,7 +261,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={3}>
                   <FormControlLabel
@@ -291,7 +291,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Medication : "
                     InputProps={{
                       readOnly: true,
@@ -306,7 +306,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={12} sm={12} md={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Date : 9-8-2021"
                     InputProps={{
                       readOnly: true,
@@ -316,7 +316,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={12} sm={12} md={3}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Weight : 70"
                     InputProps={{
                       readOnly: true,
@@ -326,7 +326,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={12} sm={12} md={4}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Height : 1.70"
                     InputProps={{
                       readOnly: true,
@@ -345,7 +345,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={6} sm={12} md={6}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Hearing right  : good"
                     InputProps={{
                       readOnly: true,
@@ -355,7 +355,7 @@ export default function DisplayPatientMedicalRecord() {
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     id="standard-read-only-input"
-                    //label="Read Only"
+                    // label="Read Only"
                     defaultValue="Hearing right  : bad"
                     InputProps={{
                       readOnly: true,
@@ -363,8 +363,8 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
-              <hr></hr>
+              <br />
+              <hr />
               <GridContainer>
                 <GridItem>
                   <h4>
@@ -390,7 +390,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
@@ -409,8 +409,8 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
-              <hr></hr>
+              <br />
+              <hr />
               <GridContainer>
                 <GridItem>
                   <h4>
@@ -436,7 +436,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
@@ -455,7 +455,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
@@ -474,7 +474,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
@@ -493,7 +493,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
@@ -504,7 +504,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
+                  <TextField
                     defaultValue="Cardio vascular exam'  : 6/10"
                     InputProps={{
                       readOnly: true,
@@ -512,10 +512,10 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
+                  <TextField
                     defaultValue="Respiratory'  : chest pain"
                     InputProps={{
                       readOnly: true,
@@ -523,7 +523,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
+                  <TextField
                     defaultValue="Respiratory exam  : "
                     InputProps={{
                       readOnly: true,
@@ -531,10 +531,10 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
+                  <TextField
                     defaultValue="Digestive  : "
                     InputProps={{
                       readOnly: true,
@@ -542,7 +542,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
+                  <TextField
                     defaultValue="Digestive exam : "
                     InputProps={{
                       readOnly: true,
@@ -550,10 +550,10 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
               </GridContainer>
-              <br></br>
+              <br />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
+                  <TextField
                     defaultValue="Aptitude  : "
                     InputProps={{
                       readOnly: true,
@@ -561,7 +561,7 @@ export default function DisplayPatientMedicalRecord() {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <TextField
+                  <TextField
                     defaultValue="Reason  : "
                     InputProps={{
                       readOnly: true,

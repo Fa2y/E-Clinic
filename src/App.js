@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+// Notification push
+
 import PrivateRoute from 'components/e-clinic/PrivateRoute';
 import Admin from 'layouts/Admin';
 import Doctor from 'layouts/Doctor';
+import Patient from 'layouts/Patient';
 import SignUp from 'views/Auth/SignUp';
 import Login from 'views/Auth/Login';
 import PageNotFound from 'views/404NotFound';
@@ -64,7 +67,7 @@ function App() {
             />
             <PrivateRoute
               path="/patient"
-              component={Admin}
+              component={Patient}
               roles={['Patient']}
             />
             <Route component={PageNotFound} />
