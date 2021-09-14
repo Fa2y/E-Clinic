@@ -110,7 +110,7 @@ export default function TobacoConsumption(props) {
     injectionTrue = (
       <GridItem xs={6} sm={3}>
         <TextField
-          name="injectionNumberUnits"
+          name="injectionNumbernits"
           label="Number units"
           onChange={handleChange}
           //value={values.number_units}

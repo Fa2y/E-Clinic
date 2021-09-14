@@ -98,6 +98,7 @@ export default function ParaClinicalExamination(props) {
         showFileNamesInPreview={true}
         dialogTitle={'Upload files'}
         dropzoneText={'Drag and drop radio,analysis files here or click'}
+        filesLimit={1}
       />
     </div>
   );

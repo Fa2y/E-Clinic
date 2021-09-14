@@ -99,9 +99,9 @@ export default function MedOrdonance(props) {
   const initialState = {
     medicament: '',
     duration: '',
-    nbPerDay: '',
+    nbPerDay: 0,
     time: '',
-    nbUnit: '',
+    nbUnit: 1,
   };
   const classes = useStyles();
   const [showPdfBtn, setShowPdfBtn] = React.useState(false);
@@ -356,6 +356,7 @@ export default function MedOrdonance(props) {
                         variant="outlined"
                         label={'Number unit : '}
                         fullWidth
+                        type="number"
                         value={ordonance.nbUnit}
                         onChange={handleChange}
                         //value={ordonanceVide.remarque}

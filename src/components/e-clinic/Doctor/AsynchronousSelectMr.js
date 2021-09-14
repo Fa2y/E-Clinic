@@ -52,8 +52,8 @@ export default function AsynchronousSelectMr({ patient, handleChange }) {
         setOpen(false);
       }}
       getOptionSelected={(option, value) =>
-        option.patient_data.user.first_name ===
-        option.patient_data.user.first_name
+        option?.patient_data.user.first_name ===
+        option?.patient_data.user.first_name
       }
       getOptionLabel={(option) => {
         if (option?.id)

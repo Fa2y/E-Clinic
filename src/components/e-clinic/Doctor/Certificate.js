@@ -81,7 +81,7 @@ export default function Certificate(props) {
     date: today_date,
     hospital: '',
     diagnosis: '',
-    days: '',
+    days: 0,
   };
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
