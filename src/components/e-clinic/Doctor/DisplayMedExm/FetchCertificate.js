@@ -6,6 +6,7 @@ import image from 'assets/img/certificate.jpg';
 import GridItem from 'components/Grid/GridItem.js';
 import GridContainer from 'components/Grid/GridContainer.js';
 import CardMedia from '@material-ui/core/CardMedia';
+import { getUser } from 'lib/utils/helpers';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -31,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '3vh',
   },
 }));
-export default function FetchCertificate(props) {
+export default function FetchCertificate({ values }) {
   const classes = useStyles();
-
+  const user = getUser();
   return (
     <div>
       <Card>
@@ -45,28 +46,27 @@ export default function FetchCertificate(props) {
                 <div className={classes.content}>
                   <p>To Whom It May Concern</p>
                   <p>
-                    This is to certify that <strong> Aymen Djebbar</strong>
-                  </p>
-                  <p>
-                    Was seen in my clinic on <strong>2021-07-22</strong> with
-                    the following diagnosis :<br></br>
-                    <br></br>
+                    This is to certify that{' '}
                     <strong>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Maxime mollitia, molestiae quas vel sint commodi
-                      repudiandae consequuntur voluptatum laborum numquam
-                      blanditiis 
+                      {`${values?.patient_data?.user?.first_name} ${values?.patient_data?.user?.last_name}`}
                     </strong>
                   </p>
                   <p>
-                    The patient requires <strong>4</strong> days for to rest and
-                    heal.
+                    Was seen in my clinic on <strong>{values?.date}</strong>{' '}
+                    with the following diagnosis :<br></br>
+                    <br></br>
+                    <strong>{values?.medical_certificate?.diagnosis}</strong>
+                  </p>
+                  <p>
+                    The patient requires{' '}
+                    <strong>{values?.medical_certificate?.days}</strong> days
+                    for to rest and heal.
                     <br></br>
                     <br></br>
-                    Seen by Dr :<strong> houssem</strong>
-                    <br></br>
-                    <br></br>
-                    Dr’s Signature
+                    Seen by:
+                    <strong>
+                      {` Dr.${user?.last_name} ${user?.first_name}`}
+                    </strong>
                   </p>
                 </div>
               </div>

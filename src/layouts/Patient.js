@@ -78,6 +78,7 @@ export default function Doctor({ ...rest }) {
     //   console.log('Successfully registered with Beams. Device ID:', deviceId),
     // )
     .then(() => beamsClient.addDeviceInterest(uid))
+    // eslint-disable-next-line no-console
     .catch(console.error);
   // initialize and destroy the PerfectScrollbar plugin
   React.useEffect(() => {

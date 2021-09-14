@@ -27,6 +27,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { getUser } from 'lib/utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,9 +80,8 @@ export default function Certificate(props) {
   const initialState = {
     patient: '',
     date: today_date,
-    hospital: '',
     diagnosis: '',
-    days: '',
+    days: 0,
   };
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -91,7 +91,6 @@ export default function Certificate(props) {
   };
 
   const handleClose = () => {
-    setCertificate(initialState);
     setOpen(false);
   };
   const handleChange = (event) => {
@@ -102,6 +101,7 @@ export default function Certificate(props) {
       });
     }
   };
+  const user = getUser();
   return (
     <div>
       <Card className={classes.root}>
@@ -187,16 +187,23 @@ export default function Certificate(props) {
                 <p>
                   days for to rest and heal.
                   <br></br>
-                  <br></br>
-                  Seen by Dr :<strong> houssem</strong>
-                  <br></br>
-                  <br></br>
-                  Dr’s Signature
+                  Seen by:{' '}
+                  <strong> {`Dr.${user?.last_name} ${user?.last_name}`}</strong>
                 </p>
               </GridContainer>
             </DialogContent>
             <DialogActions>
-              <Button color="primary" variant="contained">
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  props?.CreateDetail({
+                    diagnosis: certificate?.diagnosis,
+                    days: certificate?.days,
+                  });
+                  handleClose();
+                }}
+              >
                 Submit
               </Button>
               <Button
@@ -229,7 +236,6 @@ export default function Certificate(props) {
                         {props.patient.last_name +
                           ' ' +
                           props.patient.first_name}{' '}
-                        Aymen Djebbar
                       </strong>
                     </p>
                     <p>
@@ -244,10 +250,13 @@ export default function Certificate(props) {
                       days for to rest and heal.
                       <br></br>
                       <br></br>
-                      Seen by Dr :<strong> houssem</strong>
+                      Seen by:{' '}
+                      <strong>
+                        {`Dr.${user?.last_name} ${user?.last_name}`}
+                      </strong>
                       <br></br>
                       <br></br>
-                      Dr’s Signature
+                      Dr’s Signature Here:
                     </p>
                   </div>
                 </GridContainer>

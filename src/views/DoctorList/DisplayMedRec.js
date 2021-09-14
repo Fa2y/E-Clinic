@@ -77,6 +77,10 @@ export default function DisplayMedicalRecord() {
       value: 'skin infection',
       label: 'skin infection',
     },
+    {
+      value: '',
+      label: 'None',
+    },
   ];
   //  ----ophtamology
   const OPHTALMOLOGYPROBLEMS = [
@@ -214,32 +218,52 @@ export default function DisplayMedicalRecord() {
       type: '',
       education_level: '',
     },
+    smoking: false,
+    chewing: false,
+    injection: false,
+    oldSmoker: false,
+    alcohol: false,
+    medication_consumption: false,
+    smokingNumberUnits: 0,
+    chewingNumberUnits: 0,
+    injectionNumbernits: 0,
+    ageFc: '',
+    duration: '',
+    medication: '',
+    familySituation: '',
+    bloodType: '',
+    social_number: '',
     patient: '',
-    social_number: 0,
-    biometric: '',
-    tobaco_consumption: '',
-    tobaco_taken_as: '',
-    number_units: '',
-    alcohol_consumption: '',
-    medication_consumption: '',
-    medications: '',
-    general_diseases: '',
-    surgical_intervention: '',
-    allergic_reaction: '',
-    congenital_condition: '',
+    date: '',
+    wieght: '',
+    height: '',
+    hearing_right: '',
+    hearing_left: '',
+    visual_acuity_with_correction_left: '',
+    visual_acuity_with_correction_right: '',
+    visual_acuity_without_correction_left: '',
+    visual_acuity_without_correction_right: '',
+    skin_state: '',
+    skin_exam: '',
+    ophtalmological_state: '',
+    ophtalmological_exam: '',
+    respiratory_state: '',
+    respiratory_exam: '',
+    cardiovascular_state: '',
+    cardiovascular_exam: '',
+    digestive_state: '',
+    digestive_exam: '',
+    aptitude: '',
+    reason: '',
+    orl_state: '',
+    orl_exam: '',
+    locomotor_case: '',
+    locomotor_exam: '',
   };
-  const [values, setValues] = React.useState({
+  const [values, setvalues] = React.useState({
     ...initialState,
   });
-  const [checkedValues, setCheckedValues] = React.useState({
-    smoking: values.smoking,
-    chewing: values.chewing,
-    injection: values.injection,
-    oldSmoker: values.oldSmoker,
-    alcohol: values.alcohol,
-    medication_consumption: values.medication_consumption,
-  });
-  const [historyValues, setHistoryValues] = React.useState({
+  const [historyvalues, setHistoryvalues] = React.useState({
     smokingNumberUnits: 0,
     chewingNumberUnits: 0,
     injectionNumbernits: 0,
@@ -250,8 +274,8 @@ export default function DisplayMedicalRecord() {
   const [edited_values, setEdited] = React.useState();
   const handleChangeChecked = (event) => {
     if (event?.target) {
-      setCheckedValues({
-        ...checkedValues,
+      setvalues({
+        ...values,
         [event.target.name]: event.target.checked,
       });
       setEdited({
@@ -263,12 +287,12 @@ export default function DisplayMedicalRecord() {
   const [keyForm, setkey] = React.useState(false); //  when i click cancel : state change so all components on the form will re_render
 
   const handlePatientChange = (event, selectedValue) => {
-    setValues(selectedValue);
+    setvalues(selectedValue);
   };
   const handleChange = (event) => {
     if (event?.target) {
-      setHistoryValues({
-        ...historyValues,
+      setHistoryvalues({
+        ...historyvalues,
         [event.target.name]: event.target.value,
       });
       setEdited({
@@ -281,14 +305,14 @@ export default function DisplayMedicalRecord() {
     e.preventDefault();
 
     const { data: resData, status } = await doctorAPI.editMedicalRecord(
-      values?.patient,
+      values.id,
       edited_values,
     );
     if (status < 200 || status > 299) {
       const errors = extractErrorMsg(resData);
       errors.map((error) => toast.error(error));
     } else {
-      setValues(resData);
+      setvalues(resData);
       setEdited();
       //  setinitial(initialState);
       toast.success('Medical Record updated successfully!');
@@ -337,11 +361,11 @@ export default function DisplayMedicalRecord() {
                 <GridItem>
                   <h4>
                     <strong>Last name : </strong>{' '}
-                    {values.patient_data.user.last_name}
+                    {values?.patient_data.user.last_name}
                   </h4>
                   <h4>
                     <strong>First name : </strong>{' '}
-                    {values.patient_data.user.first_name}
+                    {values?.patient_data.user.first_name}
                   </h4>
                   <h4>
                     <strong>University name : </strong> Higher School of
@@ -349,15 +373,11 @@ export default function DisplayMedicalRecord() {
                   </h4>
                   <h4>
                     <strong>Date of birth : </strong>
-                    {values.patient_data.user.date_of_birth}
-                  </h4>
-                  <h4>
-                    <strong>Adress : </strong>{' '}
-                    {values.patient_data.user.address}
+                    {values?.patient_data.user.date_of_birth}
                   </h4>
                   <h4>
                     <strong>Level : </strong>{' '}
-                    {values.patient_data.education_level}
+                    {values?.patient_data.education_level}
                   </h4>
                 </GridItem>
               </GridContainer>
@@ -368,11 +388,11 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      {values.bloodType}
+                      {values?.bloodType}
                     </InputLabel>
                     <Select
                       name="bloodType"
-                      value={values.bloodType}
+                      // value={values.bloodType}
                       onChange={handleChange}
                     >
                       {MedicalObjects.BLOODTYPE.map((option) => (
@@ -389,11 +409,11 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      {values.familySituation}
+                      {values?.familySituation}
                     </InputLabel>
                     <Select
                       name="familySituation"
-                      value={values.familly_situation}
+                      // value={values.familly_situation}
                       onChange={handleChange}
                     >
                       {MedicalObjects.FAMILLYSITUATION.map((option) => (
@@ -406,7 +426,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <TextField
-                    label={`Social number : ${values.social_number}`}
+                    label={`Social number : ${values?.social_number}`}
                     name="social_number"
                     variant="outlined"
                     fullWidth
@@ -422,7 +442,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.smoking}
+                        checked={values?.smoking}
                         onChange={handleChangeChecked}
                         name="smoking"
                         color="primary"
@@ -437,7 +457,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     name="smokingNumberUnits"
-                    label={`Number units :   ${values.smokingNumberUnits}
+                    label={`Number units :   ${values?.smokingNumberUnits}
                     `}
                     onChange={handleChange}
                     // value={values.number_units}
@@ -446,7 +466,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={6} sm={3}>
                   <TextField
-                    label={`Age of first cigarette : ${values.smokingNumberUnits}`}
+                    label={`Age of first cigarette : ${values?.ageFc}`}
                     name="ageFc"
                     onChange={handleChange}
                     // value={values.number_units}
@@ -457,7 +477,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.oldSmoker}
+                        checked={values?.oldSmoker}
                         onChange={handleChangeChecked}
                         name="oldSmoker"
                         color="primary"
@@ -469,7 +489,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     name="duration"
-                    label={`Duration : ${values.duration}`}
+                    label={`Duration : ${values?.duration}`}
                     onChange={handleChange}
                     // value={values.number_units}
                     fullwidth
@@ -482,7 +502,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.chewing}
+                        checked={values?.chewing}
                         onChange={handleChangeChecked}
                         name="chewing"
                         color="primary"
@@ -494,7 +514,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     name="chewingNumberUnits"
-                    label={`Number Units :  ${values.chewingNumberUnits}`}
+                    label={`Number Units :  ${values?.chewingNumberUnits}`}
                     onChange={handleChange}
                     // value={values.number_units}
                     fullwidth
@@ -507,7 +527,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.injection}
+                        checked={values?.injection}
                         onChange={handleChangeChecked}
                         name="injection"
                         color="primary"
@@ -519,7 +539,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={6} sm={3}>
                   <TextField
                     name="injectionNumberUnits"
-                    label={`number Units : ${values.injectionNumbernits}`}
+                    label={`number Units : ${values?.injectionNumbernits}`}
                     onChange={handleChange}
                     // value={values.number_units}
                     fullwidth
@@ -532,7 +552,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.alcohol}
+                        checked={values?.alcohol}
                         onChange={handleChangeChecked}
                         name="alcohol"
                         color="primary"
@@ -545,7 +565,7 @@ export default function DisplayMedicalRecord() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={!values.alcohol}
+                        checked={values?.medication_consumption}
                         onChange={handleChangeChecked}
                         name="medication_consumption"
                         color="primary"
@@ -557,7 +577,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={3}>
                   <TextField
                     name="medication"
-                    label={`Medication name : ${values.medication}`}
+                    label={`Medication name : ${values?.medication}`}
                     onChange={handleChange}
                     // value={values.number_units}
                     fullwidth
@@ -568,43 +588,29 @@ export default function DisplayMedicalRecord() {
                 <strong>Screening visit</strong>
               </h2>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={3}>
-                  <TextField
-                    id="date"
-                    required
-                    variant="outlined"
-                    name="date"
-                    label={`Date : ${values.date}`}
-                    type="date"
-                    // value={values.date}
-                    onChange={handleChange}
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label={`Weight : ${values.wieght}`}
+                    label={`Weight : ${values?.wieght}`}
                     variant="outlined"
                     type="number"
                     name="wieght"
                     onChange={handleChange}
                     // value={values.wieght}
                     required
+                    fullWidth
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label={`Height : ${values.height}`}
+                    label={`Height : ${values?.height}`}
                     variant="outlined"
                     type="number"
                     name="height"
                     onChange={handleChange}
                     required
+                    fullWidth
                   />
                 </GridItem>
               </GridContainer>
@@ -619,7 +625,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={6} sm={12} md={6}>
                   <TextField
                     name="hearing_right"
-                    label={`Hearing right : ${values.hearing_right}`}
+                    label={`Hearing right : ${values?.hearing_right}`}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -629,7 +635,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     name="hearing_left"
-                    label={`Hearing left : ${values.hearing_left}`}
+                    label={`Hearing left : ${values?.hearing_left}`}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -651,7 +657,7 @@ export default function DisplayMedicalRecord() {
                   <TextField
                     name="visual_acuity_with_correction_left"
                     label={`Visual acuity with correction left
-                      ${values.visual_acuity_with_correction_left}`}
+                      ${values?.visual_acuity_with_correction_left}`}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -660,8 +666,8 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     name="visual_acuity_with_correction_right"
-                    label={`Visual acuity with correction left 
-                      ${values.visual_acuity_with_correction_right}`}
+                    label={`Visual acuity with correction right 
+                      ${values?.visual_acuity_with_correction_right}`}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -674,7 +680,7 @@ export default function DisplayMedicalRecord() {
                   <TextField
                     name="visual_acuity_without_correction_left"
                     label={`Visual acuity without correction left 
-                      ${values.visual_acuity_without_correction_left}`}
+                      ${values?.visual_acuity_without_correction_left}`}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -683,8 +689,8 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     name="visual_acuity_without_correction_right"
-                    label={`Visual acuity without correction left 
-                      ${values.visual_acuity_without_correction_right}`}
+                    label={`Visual acuity without correction right 
+                      ${values?.visual_acuity_without_correction_right}`}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -707,7 +713,7 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Skin problems : {values.skin_state}
+                      Skin problems : {values?.skin_state}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -725,7 +731,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    label={`Skin exam: ${values.skin_exam}`}
+                    label={`Skin exam: ${values?.skin_exam}`}
                     name="skin_exam"
                     variant="outlined"
                     fullWidth
@@ -741,12 +747,12 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Ophtalmology: {values.ophtalmological_state}
+                      Ophtalmology: {values?.ophtalmological_state}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       name="ophtalmological_state"
-                      value={values.ophtalmological_state}
+                      // value={values.ophtalmological_state}
                       onChange={handleChange}
                     >
                       {OPHTALMOLOGYPROBLEMS.map((option) => (
@@ -759,7 +765,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    label={`Ophtalmology exam ${values.ophtalmological_exam}`}
+                    label={`Ophtalmology exam ${values?.ophtalmological_exam}`}
                     name="ophtalmological_exam"
                     fullWidth
                     variant="outlined"
@@ -775,7 +781,7 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Orl: {values.orl_state}
+                      Orl: {values?.orl_state}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -792,7 +798,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    label={`Orl exam ${values.orl_state}`}
+                    label={`Orl exam ${values?.orl_exam}`}
                     name="orl_exam"
                     fullWidth
                     onChange={handleChange}
@@ -807,12 +813,12 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Locomoto : {values.locomotor_case}
+                      Locomoto : {values?.locomotor_case}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       name="locomotor_case"
-                      value={values.locomotor_case}
+                      // value={values.locomotor_case}
                       onChange={handleChange}
                     >
                       {LOCOMOTORPROLEMS.map((option) => (
@@ -825,7 +831,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    label={`locomotor exam ${values.locomotor_exam}`}
+                    label={`locomotor exam ${values?.locomotor_exam}`}
                     name="locomotor_exam"
                     fullWidth
                     onChange={handleChange}
@@ -840,12 +846,12 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Cardiovascular : {values.cardiovascular_state}
+                      Cardiovascular : {values?.cardiovascular_state}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       name="cardiovascular_state"
-                      value={values.cardiovascular_state}
+                      // value={values.cardiovascular_state}
                       onChange={handleChange}
                     >
                       {CARDIOVASCULARPROBLEMS.map((option) => (
@@ -859,7 +865,7 @@ export default function DisplayMedicalRecord() {
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     label={`Cardiovascular exam 
-                      ${values.cardiovascular_exam}`}
+                      ${values?.cardiovascular_exam}`}
                     name="cardiovascular_exam"
                     fullWidth
                     onChange={handleChange}
@@ -874,12 +880,12 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Respiratory : {values.respiratory_state}
+                      Respiratory : {values?.respiratory_state}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       name="respiratory_state"
-                      value={values.respiratory_state}
+                      // value={values.respiratory_state}
                       onChange={handleChange}
                     >
                       {RESPIRATORYPROBLEMS.map((option) => (
@@ -892,7 +898,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    label={`Respiratory exam ${values.respiratory_exam}`}
+                    label={`Respiratory exam ${values?.respiratory_exam}`}
                     name="respiratory_exam"
                     fullWidth
                     onChange={handleChange}
@@ -907,7 +913,7 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Digestive: {values.digestive_state}
+                      Digestive: {values?.digestive_state}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -924,7 +930,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    label={`Digestive exam ${values.digestive_exam}`}
+                    label={`Digestive exam ${values?.digestive_exam}`}
                     name="digestive_exam"
                     fullWidth
                     onChange={handleChange}
@@ -939,7 +945,7 @@ export default function DisplayMedicalRecord() {
                     className={classes.formControl}
                   >
                     <InputLabel id="demo-simple-select-outlined-label">
-                      Aptitude: {values.aptitude}
+                      Aptitude: {values?.aptitude ? 'apt' : 'inapt'}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -956,7 +962,7 @@ export default function DisplayMedicalRecord() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
-                    label={`Reason ${values.reason}`}
+                    label={`Reason ${values?.reason}`}
                     name="reason"
                     fullWidth
                     onChange={handleChange}

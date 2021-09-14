@@ -54,19 +54,15 @@ const initialState = {
 export default function ParaClinicalExamination(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [paraClinicalExam, setParaClinicalExam] = React.useState(initialState);
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
-    setParaClinicalExam(initialState);
     setOpen(false);
   };
   const handleSave = (files) => {
-    setParaClinicalExam({
-      files: files,
-    });
+    props?.CreateDetail({ paraclinical_exam: files[0] });
     setOpen(false);
   };
   return (
@@ -98,6 +94,7 @@ export default function ParaClinicalExamination(props) {
         showFileNamesInPreview={true}
         dialogTitle={'Upload files'}
         dropzoneText={'Drag and drop radio,analysis files here or click'}
+        filesLimit={1}
       />
     </div>
   );

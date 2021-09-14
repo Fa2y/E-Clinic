@@ -37,7 +37,7 @@ export default function TobacoConsumption(props) {
         ...checkedValues,
         [event.target.name]: event.target.checked,
       });
-      props.handleClick(!event.target.checked, event.target.name);
+      props.handleClick(event.target.checked, event.target.name);
     }
   };
 
@@ -110,7 +110,7 @@ export default function TobacoConsumption(props) {
     injectionTrue = (
       <GridItem xs={6} sm={3}>
         <TextField
-          name="injectionNumberUnits"
+          name="injectionNumbernits"
           label="Number units"
           onChange={handleChange}
           //value={values.number_units}

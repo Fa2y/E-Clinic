@@ -14,6 +14,11 @@ import Evacuation from 'components/e-clinic/Doctor/Evacuation';
 import Certificate from 'components/e-clinic/Doctor/Certificate';
 import MedOrdonance from 'components/e-clinic/Doctor/MedOrdonance';
 
+// Api
+import doctorAPI from 'lib/api/doctor';
+import { toast } from 'react-toastify';
+import { extractErrorMsg } from 'lib/utils/helpers';
+
 export default function CreateMedicalExam() {
   const initialState = {
     first_name: '',
@@ -28,6 +33,7 @@ export default function CreateMedicalExam() {
   });
   const [showExams, setShowExams] = React.useState(false);
   const [showBtn, setShowBtn] = React.useState(false);
+  const [medicalExamId, setMedicalExamId] = React.useState('');
   const handlePatientChange = (event, selectedValue) => {
     setPatient({
       ...patient,
@@ -41,9 +47,34 @@ export default function CreateMedicalExam() {
     setShowBtn(!showBtn);
     setShowExams(false);
   };
-  const newExam = () => {
+  const newExam = async () => {
+    const { data, status } = await doctorAPI.createMedicalExam({
+      patient: patient?.patient,
+    });
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors.map((error) => toast.error(error));
+      return [];
+    }
+    toast.info('Exam Created Successfully, proceed with filling data');
+    setMedicalExamId(data?.id);
     setShowExams(true);
     setShowBtn(false);
+    return true;
+  };
+  const CreateDetail = async (part, detailData) => {
+    const { data, status } = await doctorAPI.addMedicalExamDetails(
+      medicalExamId,
+      part,
+      detailData,
+    );
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors?.map((error) => toast.error(error));
+      return [];
+    }
+    toast.info('Detail Added, proceed with filling data');
+    return true;
   };
   return (
     <div>
@@ -78,22 +109,43 @@ export default function CreateMedicalExam() {
                 spacing={2}
               >
                 <Grid item>
-                  <ClinicalExamination patient={patient} />
+                  <ClinicalExamination
+                    patient={patient}
+                    CreateDetail={(data) => CreateDetail('clinical_exam', data)}
+                  />
                 </Grid>
                 <Grid item>
-                  <ParaClinicalExamination />
+                  <ParaClinicalExamination
+                    CreateDetail={(data) =>
+                      CreateDetail('paraclinical_exam', data)
+                    }
+                  />
                 </Grid>
                 <Grid item>
-                  <Orientation patient={patient} />
+                  <Orientation
+                    patient={patient}
+                    CreateDetail={(data) => CreateDetail('orientation', data)}
+                  />
                 </Grid>
                 <Grid item>
-                  <Evacuation patient={patient} />
+                  <Evacuation
+                    patient={patient}
+                    CreateDetail={(data) => CreateDetail('evacuation', data)}
+                  />
                 </Grid>
                 <Grid item>
-                  <Certificate patient={patient} />
+                  <Certificate
+                    patient={patient}
+                    CreateDetail={(data) =>
+                      CreateDetail('medical_certificate', data)
+                    }
+                  />
                 </Grid>
                 <Grid item>
-                  <MedOrdonance patient={patient} />
+                  <MedOrdonance
+                    patient={patient}
+                    CreateDetail={(data) => CreateDetail('ordanance', data)}
+                  />
                 </Grid>
               </Grid>
             </div>

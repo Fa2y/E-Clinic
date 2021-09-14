@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { makeStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
@@ -29,6 +30,8 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Typography from '@material-ui/core/Typography';
 import { TableBody } from '@material-ui/core';
 import age from 'Medical_constants/UsefulFunctions';
+import EditIcon from '@material-ui/icons/Edit';
+import { getUser } from 'lib/utils/helpers';
 //import { intlFormat } from "date-fns/esm";
 
 const useStyles = makeStyles((theme) => ({
@@ -97,9 +100,9 @@ export default function MedOrdonance(props) {
   const initialState = {
     medicament: '',
     duration: '',
-    nbPerDay: '',
+    nbPerDay: 0,
     time: '',
-    nbUnit: '1',
+    nbUnit: 1,
   };
   const classes = useStyles();
   const [showPdfBtn, setShowPdfBtn] = React.useState(false);
@@ -107,17 +110,19 @@ export default function MedOrdonance(props) {
   //const [addMed, setAddMed] = React.useState(1);
   const [ordonanceTable, setOrdonanceTable] = React.useState(initialStateTable);
   const [ordonance, setOrdonance] = React.useState(initialState);
+  const [changed, setChanged] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOrdonance(initialState);
-    setOrdonanceTable(initialStateTable)
+    setOrdonanceTable(initialStateTable);
     setOpen(false);
-    setShowPdfBtn(false)
+    setShowPdfBtn(false);
   };
   const handleChange = (event) => {
+    setChanged(true);
     if (event?.target) {
       setOrdonance({
         ...ordonance,
@@ -131,18 +136,35 @@ export default function MedOrdonance(props) {
       med: [...prevState.med, ordonance],
     }));
     setkey((prevkey) => prevkey + 1);
+    setOrdonance(initialState);
+    setChanged(false);
   };
-  const handleSubmit = () => {
+  const modifyMed = (index) => {
+    const temp = ordonanceTable.med;
+    const medData = temp[index];
+    temp.splice(index, 1);
     setOrdonanceTable((prevState) => ({
       ...ordonanceTable,
-      med: [...prevState.med, ordonance],
+      med: temp,
     }));
-    setShowPdfBtn(true)
+    setOrdonance(medData);
+    setChanged(true);
+  };
+  const handleSubmit = () => {
+    if (changed) {
+      setOrdonanceTable((prevState) => ({
+        ...ordonanceTable,
+        med: [...prevState.med, ordonance],
+      }));
+    }
+    props?.CreateDetail({ med: ordonanceTable?.med });
+    setShowPdfBtn(true);
   };
   //-----------
   //console.log(ordonance.med[1]);
+  const user = getUser();
   const Meds = ordonanceTable.med;
-  const listItems = Meds.map((number) => (
+  const listItemsPdf = Meds.map((number) => (
     <div>
       <TableBody>
         <TableRow>
@@ -151,6 +173,32 @@ export default function MedOrdonance(props) {
           <TableCell align="right">{number.duration} days</TableCell>
           <TableCell align="right">{number.nbPerDay} times per day</TableCell>
           <TableCell align="right">{number.nbUnit} units</TableCell>
+        </TableRow>
+      </TableBody>
+    </div>
+  ));
+  const listItems = Meds.map((number, index) => (
+    <div>
+      <TableBody>
+        <TableRow>
+          <TableCell>{number.medicament}</TableCell>
+          <TableCell align="right">{number.time}</TableCell>
+          <TableCell align="right">{number.duration} days</TableCell>
+          <TableCell align="right">{number.nbPerDay} times per day</TableCell>
+          <TableCell align="right">{number.nbUnit} units</TableCell>
+          <TableCell>
+            <div>
+              <IconButton
+                color="primary"
+                aria-label="add to shopping cart"
+                onClick={() => {
+                  modifyMed(index);
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </div>
+          </TableCell>
         </TableRow>
       </TableBody>
     </div>
@@ -201,7 +249,7 @@ export default function MedOrdonance(props) {
                     </p>
                     <p>
                       <strong>
-                        Age : {age(props.patient.date_of_birth, today_date)}
+                        Age : {age(props?.patient?.date_of_birth, today_date)}
                       </strong>
                     </p>
                   </div>
@@ -209,7 +257,9 @@ export default function MedOrdonance(props) {
                 <GridItem xs={12} sm={12} md={6}>
                   <div>
                     <p>
-                      <strong>Doctor : Ahmed Benhamouda</strong>
+                      <strong>
+                        {`Doctor : ${user?.last_name} ${user?.first_name}`}
+                      </strong>
                     </p>
                     <p>
                       <strong>Date : {ordonanceTable.date}</strong>
@@ -218,20 +268,24 @@ export default function MedOrdonance(props) {
                 </GridItem>
               </GridContainer>
               <div key={keyForm}>
+                <div className={classes.meds}>{listItems}</div>
+                <Divider />
+                <br />
                 <div className={classes.med}>
                   <Autocomplete
                     id="combo-box-demo"
                     name="medicament"
+                    value={{ name: ordonance?.medicament }}
                     onChange={(event, value) =>
                       setOrdonance({
                         ...ordonance,
-                        medicament: value.name,
+                        medicament: value?.name,
                       })
                     }
                     options={medicaments}
                     getOptionLabel={(option) => option.name}
                     getOptionSelected={(option, value) =>
-                      option.name === option.name
+                      option?.name === value?.name
                     }
                     fullWidth
                     renderInput={(params) => (
@@ -250,6 +304,7 @@ export default function MedOrdonance(props) {
                         label={'Period : '}
                         fullWidth
                         name="duration"
+                        value={ordonance?.duration}
                         onChange={handleChange}
                         //value={ordonanceVide.duration}
                       />
@@ -261,6 +316,7 @@ export default function MedOrdonance(props) {
                         label={'Number per day : '}
                         fullWidth
                         type="number"
+                        value={ordonance?.nbPerDay}
                         onChange={handleChange}
                         //value={ordonanceVide.nbPerDay}
                       />
@@ -271,7 +327,7 @@ export default function MedOrdonance(props) {
                     row
                     aria-label="position"
                     name="time"
-                    defaultValue="top"
+                    value={ordonance.time}
                   >
                     <div className={classes.radio}>
                       <FormControlLabel
@@ -305,6 +361,8 @@ export default function MedOrdonance(props) {
                         variant="outlined"
                         label={'Number unit : '}
                         fullWidth
+                        type="number"
+                        value={ordonance.nbUnit}
                         onChange={handleChange}
                         //value={ordonanceVide.remarque}
                         //onChange={handleChange}
@@ -369,7 +427,7 @@ export default function MedOrdonance(props) {
                           </strong>
                         </TableCell>
                         <TableCell align="left">
-                          <strong>Doctor : Ahmed Benhamouda</strong>
+                          <strong>{`Doctor : ${user?.last_name} ${user?.first_name}`}</strong>
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -378,7 +436,7 @@ export default function MedOrdonance(props) {
                         <TableCell align="right">
                           <strong>
                             Age of patient :{' '}
-                            {age(props.patient.date_of_birth, today_date)}
+                            {age(props?.patient?.date_of_birth, today_date)}
                           </strong>
                         </TableCell>
                         <TableCell align="left">
@@ -389,7 +447,7 @@ export default function MedOrdonance(props) {
                   </Table>
                 </GridContainer>
                 <GridContainer>
-                  <div className={classes.meds}>{listItems}</div>
+                  <div className={classes.meds}>{listItemsPdf}</div>
                 </GridContainer>
               </div>
             </div>

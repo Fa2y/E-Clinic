@@ -911,7 +911,7 @@ const CancelAppointmentModal = ({ openCancel, setOpenCancel, mutate }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                   <h4 className={classes.cardTitleWhite}>Appointment</h4>
-                  <p className={classes.cardCategoryWhite}>Cancel</p>
+                  <p className={classes.cardCategoryWhite}>Edit</p>
                 </div>
                 <IconButton
                   color="danger"

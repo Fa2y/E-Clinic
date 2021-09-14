@@ -5,15 +5,19 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useSWR from 'swr';
 import doctorAPI from 'lib/api/doctor';
+import moment from 'moment';
 
 // <AsynchronousSelectPatients patient={patient} setPatient={setPatient} />;
-export default function PatientName({ patient, handleChange, name }) {
+export default function AsynchronousSelectMedicalExam({
+  medicalExamData,
+  handleChange,
+}) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options?.length === 0;
   const { data: pData, error: pErr } = useSWR(
-    ['patients'],
-    doctorAPI.fetchPatientsNoMedicalRecord,
+    ['medicalExams'],
+    doctorAPI.fetchMedicalExam,
   );
   React.useEffect(() => {
     let active = true;
@@ -23,7 +27,7 @@ export default function PatientName({ patient, handleChange, name }) {
     }
 
     if (active) {
-      setOptions(pData?.data);
+      pData?.data ? setOptions(pData?.data) : setOptions([]);
     }
 
     return () => {
@@ -42,9 +46,9 @@ export default function PatientName({ patient, handleChange, name }) {
       id="asynchronous-demo"
       style={{ width: '100%' }}
       open={open}
-      value={patient}
+      value={medicalExamData}
       onChange={handleChange}
-      name="patient"
+      name="medicalExamData"
       onOpen={() => {
         setOpen(true);
       }}
@@ -52,11 +56,16 @@ export default function PatientName({ patient, handleChange, name }) {
         setOpen(false);
       }}
       getOptionSelected={(option, value) =>
-        option.user.first_name === value.user.first_name
+        option?.patient_data.user.first_name ===
+        option?.patient_data.user.first_name
       }
       getOptionLabel={(option) => {
-        if (option?.type)
-          return `${option?.type}(${option?.education_level}):${option?.user?.first_name} ${option?.user?.last_name}`;
+        if (option?.id)
+          return `${option?.patient_data.type} (${
+            option?.patient_data.education_level
+          }): ${option?.patient_data.user.first_name} ${
+            option?.patient_data.user.last_name
+          } (${moment(option?.date).format('YYYY MMM DD')})`;
       }}
       options={options}
       loading={loading}

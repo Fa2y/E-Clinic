@@ -8,7 +8,7 @@ import CardFooter from 'components/Card/CardFooter';
 import Button from '@material-ui/core/Button';
 import CardHeader from 'components/Card/CardHeader';
 import doctorAPI from 'lib/api/doctor';
-import { extractErrorMsg } from 'lib/utils/helpers';
+import { extractErrorMsg }  from 'lib/utils/helpers';
 import { toast } from 'react-toastify';
 // core componnenets for Medical Record
 import PatientInfo from 'components/e-clinic/Doctor/patientInfo';
@@ -78,7 +78,7 @@ export default function CreateMedicalRecord() {
     cardiovascular_exam: '',
     digestive_state: '',
     digestive_exam: '',
-    aptitude: '',
+    aptitude: false,
     reason: '',
     orl_state: '',
     orl_exam: '',

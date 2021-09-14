@@ -27,6 +27,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import age from 'Medical_constants/UsefulFunctions';
+import { getUser } from 'lib/utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +75,7 @@ export default function Orientation(props) {
     patient: '',
     date: today_date,
     orientation: '',
+    doctor_name: '',
   };
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -81,9 +83,8 @@ export default function Orientation(props) {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  const user = getUser();
   const handleClose = () => {
-    setOrientation(initialState);
     setOpen(false);
   };
   const handleChange = (event) => {
@@ -134,7 +135,7 @@ export default function Orientation(props) {
                     </p>
                     <p>
                       <strong>
-                        Age : {age(props.patient.date_of_birth, today_date)}
+                        Age : {age(props?.patient?.date_of_birth, today_date)}
                       </strong>
                     </p>
                   </div>
@@ -142,7 +143,9 @@ export default function Orientation(props) {
                 <GridItem xs={12} sm={12} md={6}>
                   <div>
                     <p>
-                      <strong>Doctor :</strong>
+                      <strong>
+                        {`Doctor: Dr.${user?.last_name} ${user?.first_name}`}{' '}
+                      </strong>
                     </p>
                     <p>
                       <strong>Date : {orientation.date}</strong>
@@ -151,8 +154,16 @@ export default function Orientation(props) {
                 </GridItem>
               </GridContainer>
               <GridContainer>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    name="doctor_name"
+                    onChange={handleChange}
+                    label="Doctor Name"
+                  />
+                </div>
                 <TextField
-                  autoFocus
                   margin="dense"
                   name="orientation"
                   fullWidth
@@ -165,7 +176,17 @@ export default function Orientation(props) {
               </GridContainer>
             </DialogContent>
             <DialogActions>
-              <Button color="primary" variant="contained">
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  props?.CreateDetail({
+                    orientation: orientation?.orientation,
+                    doctor_name: orientation?.doctor_name,
+                  });
+                  handleClose();
+                }}
+              >
                 Submit
               </Button>
               <Button
@@ -200,7 +221,7 @@ export default function Orientation(props) {
                           </strong>
                         </TableCell>
                         <TableCell align="right">
-                          <strong>Doctor : Houssem</strong>
+                          <strong>{`Doctor: Dr.${user?.last_name} ${user?.first_name}`}</strong>
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -208,11 +229,19 @@ export default function Orientation(props) {
                       <TableRow>
                         <TableCell>
                           <strong>
-                            Age : {age(props.patient.date_of_birth, today_date)}
+                            Age :{' '}
+                            {age(props?.patient?.date_of_birth, today_date)}
                           </strong>
                         </TableCell>
                         <TableCell align="right">
                           <strong>Date : {orientation.date}</strong>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>
+                          <strong>Dear {orientation?.doctor_name},</strong>
                         </TableCell>
                       </TableRow>
                     </TableHead>

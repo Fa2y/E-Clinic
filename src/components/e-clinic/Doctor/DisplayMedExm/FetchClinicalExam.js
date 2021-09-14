@@ -7,6 +7,7 @@ import image from 'assets/img/clinique.jpg';
 import GridContainer from 'components/Grid/GridContainer';
 import GridItem from 'components/Grid/GridItem.js';
 import CardHeader from 'components/Card/CardHeader';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,12 +19,19 @@ const useStyles = makeStyles((theme) => ({
   content: {
     marginLeft: '1.5vh',
   },
+  content1: {
+    marginLeft: '1.5vh',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   media: {
     maxWidth: '100%',
     height: '10vh',
     paddingTop: '100%',
   },
-  
+
   title: {
     height: '50px',
     fontStyle: 'italic',
@@ -34,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FetchClinicalExam() {
+export default function FetchClinicalExam({ values }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -42,20 +50,24 @@ export default function FetchClinicalExam() {
     <Card>
       <GridContainer>
         <GridItem xs={7}>
-          <div className={classes.content}>
-            <h3 align="center">Clinical Examination</h3>
-            <p className={classes.text}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-              mollitia, molestiae quas vel sint commodi repudiandae consequuntur
-              voluptatum laborumdqsdqsdsqdqsdqsdqs numquam blanditiis harum
-              quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque
-              rerumdsqdqsdqs ! Provdqssssssssdsqdqsdsqd dsqdqsd dsqdqisquam eius
-              sed odit fugiat iusto fuga praesentium optio, eaque rerumdsqdqsdqs
-             sqdqsd dsqdq
-              dsqdidentdqsssssssssssssssssss
-              umdsqdqsdqs ! Prov
-            </p>
-          </div>
+          {values?.clinical_exam && (
+            <div className={classes.content}>
+              <h3 align="center">Clinical Examination</h3>
+              <p className={classes.text}>{values?.clinical_exam}</p>
+            </div>
+          )}
+          <br />
+          <br />
+          <br />
+          <br />
+          {values?.paraclinical_exam && (
+            <div className={classes.content1}>
+              <h3 align="center">Paraclinical Examination</h3>
+              <a href={values?.paraclinical_exam} target="_blank">
+                <DescriptionIcon style={{ fontSize: 100, marginTop: '5%' }} />
+              </a>
+            </div>
+          )}
         </GridItem>
         <GridItem xs={5}>
           <CardMedia

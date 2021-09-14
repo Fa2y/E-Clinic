@@ -1,22 +1,95 @@
+import React from 'react';
 import FetchCertificate from 'components/e-clinic/Doctor/DisplayMedExm/FetchCertificate';
 import FetchClinicalExam from 'components/e-clinic/Doctor/DisplayMedExm/FetchClinicalExam';
 import FetchEvacuation from 'components/e-clinic/Doctor/DisplayMedExm/FetchEvacuation';
 import FetchOrdonance from 'components/e-clinic/Doctor/DisplayMedExm/FetchOrdonance';
 import FetchOrientation from 'components/e-clinic/Doctor/DisplayMedExm/FetchOrientation';
-import React from 'react';
+import AsynchronousSelectMedicalExam from 'components/e-clinic/Doctor/AsynchronousMedicalExam';
+
+import Card from 'components/Card/Card';
+import CardBody from 'components/Card/CardBody';
+import CardHeader from 'components/Card/CardHeader';
+import GridItem from 'components/Grid/GridItem';
+import GridContainer from 'components/Grid/GridContainer';
+import moment from 'moment';
+import { getUser } from 'lib/utils/helpers';
 
 export default function DisplayMedExam() {
+  const [values, setvalues] = React.useState({});
+  const handleValuesChange = (event, selectedValue) => {
+    setvalues(selectedValue);
+  };
+  const user = getUser();
   return (
     <div>
-      <FetchClinicalExam />
+      <Card>
+        <CardHeader color="info">
+          <h3>Dislplay Medical Exam</h3>
+        </CardHeader>
+        <CardBody>
+          <br />
+          <GridContainer>
+            <GridItem xs={12}>
+              <AsynchronousSelectMedicalExam
+                patient={values}
+                handleChange={handleValuesChange}
+              />
+            </GridItem>
+          </GridContainer>
+          {values?.patient_data && (
+            <GridContainer>
+              <GridItem>
+                <h2>
+                  <strong>Patient&apos;s informations</strong>
+                </h2>
+                <h4>
+                  <strong>Last name: </strong>{' '}
+                  {values?.patient_data?.user?.last_name}
+                </h4>
+                <h4>
+                  <strong>First name: </strong>{' '}
+                  {values?.patient_data?.user?.first_name}
+                </h4>
+                <h4>
+                  <strong>University name: </strong> Higher School of Computer
+                  Science 08 May 1945 - Sidi Bel Abbes
+                </h4>
+                <h4>
+                  <strong>Date of birth: </strong>
+                  {values?.patient_data?.user?.date_of_birth}
+                </h4>
+                <h4>
+                  <strong>Level: </strong>{' '}
+                  {values?.patient_data &&
+                    `${values?.patient_data?.type}(${values?.patient_data?.education_level})`}
+                </h4>
+                <h4>
+                  <strong>Clinical Exam Done by: </strong>
+                  {`Dr.${user?.last_name} ${user?.first_name}`}
+                </h4>
+                <h4>
+                  <strong>Clinical Exam Date: </strong>
+                  {moment(values?.date).format('YYYY MMMM Do')}
+                </h4>
+              </GridItem>
+            </GridContainer>
+          )}
+        </CardBody>
+      </Card>
       <br />
-      <FetchOrientation />
+      {(values?.clinical_exam || values?.paraclinical_exam) && (
+        <FetchClinicalExam values={values} />
+      )}
       <br />
-      <FetchEvacuation />
+      {values?.orientation && <FetchOrientation values={values} />}
       <br />
-      <FetchCertificate />
+      {values?.evacuation && <FetchEvacuation values={values} />}
       <br />
-      <FetchOrdonance />
+      {values?.medical_certificate && <FetchCertificate values={values} />}
+      <br />
+      {values?.ordanance && values?.ordanance?.length !== 0 && (
+        <FetchOrdonance values={values} />
+      )}
     </div>
   );
 }

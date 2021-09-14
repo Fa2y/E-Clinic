@@ -6,6 +6,8 @@ import GridItem from 'components/Grid/GridItem.js';
 import GridContainer from 'components/Grid/GridContainer.js';
 import Typography from '@material-ui/core/Typography';
 import image from 'assets/img/ordonance.jpg';
+import { Table, TableCell, TableRow, TableBody } from '@material-ui/core';
+import { getUser } from 'lib/utils/helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +37,22 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '4vh',
   },
 }));
-export default function FetchOrdonance(props) {
+export default function FetchOrdonance({ values }) {
   const classes = useStyles();
-
+  const user = getUser();
+  const listItems = values?.ordanance?.map((number, index) => (
+    <Table>
+      <TableBody>
+        <TableRow>
+          <TableCell align="left">{number.medicament}</TableCell>
+          <TableCell align="right">{number.time}</TableCell>
+          <TableCell align="right">{number.duration} days</TableCell>
+          <TableCell align="right">{number.nbPerDay} times per day</TableCell>
+          <TableCell align="right">{number.nbUnit} units</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  ));
   return (
     <div>
       <Card>
@@ -49,33 +64,31 @@ export default function FetchOrdonance(props) {
                 <GridItem xs={6} sm={12} md={6}>
                   <div className={classes.header2}>
                     <p>
-                      <strong>Patient : Benmammar Houssam</strong>
+                      <strong>{`Patient : ${values?.patient_data?.user?.first_name} ${values?.patient_data?.user?.last_name}`}</strong>
                     </p>
                     <p>
-                      <strong>Age : 22</strong>
+                      <strong>
+                        Age :{' '}
+                        {new Date().getFullYear() -
+                          new Date(
+                            values?.patient_data?.user?.date_of_birth,
+                          ).getFullYear()}
+                      </strong>
                     </p>
                   </div>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <div className={classes.header}>
                     <p>
-                      <strong>Doctor : Brahimi</strong>
+                      <strong>{`Dr.${user?.last_name} ${user?.first_name}`}</strong>
                     </p>
                     <p>
-                      <strong>Date : 21/07/2021</strong>
+                      <strong>Date : {values?.date}</strong>
                     </p>
                   </div>
                 </GridItem>
               </GridContainer>
-              <p className={classes.text}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-                mollitia, molestiae quas vel sint commodi repudiandae
-                consequuntur voluptatum laborum numquam blanditiis harum
-                quisquam eius sed odit fugiat iusto fuga praesentium optio,
-                eaque rerum! Provident similique accusantium nemo autem.
-                Veritatis obcaecati tenetur iure eius earum ut molestias
-                architecto voluptate aliquam nihil, eveniet aliquid culpa
-              </p>
+              {listItems}
             </div>
           </GridItem>
           <GridItem xs={5}>

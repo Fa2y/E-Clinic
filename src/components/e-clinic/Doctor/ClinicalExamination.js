@@ -68,32 +68,12 @@ export default function ClinicalExamination(props) {
   };
 
   const handleClose = () => {
-    setClinicalExam('');
     setOpen(false);
   };
   const handleChange = (event) => {
     setClinicalExam({
       clinicalExam: event.target.value,
     });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const { data: resData, status } = await doctorAPI.editMedicalRecord(
-      props?.patient,
-      today_date,
-      clinicalExam,
-    );
-    if (status < 200 || status > 299) {
-      const errors = extractErrorMsg(resData);
-      errors.map((error) => toast.error(error));
-    } else {
-      setValues(resData);
-      setEdited();
-      // setinitial(initialState);
-      toast.success('Clinical examination created successfully!');
-    }
   };
 
   return (
@@ -138,7 +118,12 @@ export default function ClinicalExamination(props) {
           <Button
             color="primary"
             variant="contained"
-            onClick={handleSubmit}
+            onClick={() => {
+              props?.CreateDetail({
+                clinical_exam: clinicalExam?.clinicalExam,
+              });
+              handleClose();
+            }}
             type="submit"
           >
             Submit
