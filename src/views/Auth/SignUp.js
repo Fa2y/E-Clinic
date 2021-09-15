@@ -19,6 +19,8 @@ import { toast } from 'react-toastify';
 import { extractErrorMsg } from 'lib/utils/helpers';
 import { useHistory } from 'react-router-dom';
 import logo from 'assets/img/cliniquelogo.png';
+// navbar
+import { AuthNavBar } from 'views/Home';
 
 function Copyright() {
   return (
@@ -127,178 +129,181 @@ export default function SignUp() {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar alt="E-Clinic" src={logo} className={classes.avatar} />
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="first_name"
-                value={values.first_name}
-                variant="outlined"
-                required
-                fullWidth
-                onChange={handleChange}
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="last_name"
-                value={values.last_name}
-                onChange={handleChange}
-                autoComplete="lname"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password1"
-                onChange={handleChange}
-                value={values.password1}
-                label="Password"
-                type="password"
-                id="password1"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password2"
-                onChange={handleChange}
-                value={values.password2}
-                label="Password Comfirmation"
-                type="password"
-                id="password2"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="sex"
+    <div>
+      <AuthNavBar />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar alt="E-Clinic" src={logo} className={classes.avatar} />
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="first_name"
+                  value={values.first_name}
+                  variant="outlined"
+                  required
+                  fullWidth
                   onChange={handleChange}
-                  value={values.sex}
-                >
-                  <MenuItem value="Male">Male</MenuItem>
-                  <MenuItem value="Female">Female</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="date"
-                label="Birthday"
-                type="date"
-                name="date_of_birth"
-                defaultValue="1970-01-01"
-                onChange={handleChange}
-                value={values.date_of_birth}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <MuiPhoneInput
-                defaultCountry="dz"
-                onlyCountries={['dz']}
-                name="phone"
-                value={values.phone}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Type</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="type"
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="last_name"
+                  value={values.last_name}
                   onChange={handleChange}
-                  value={values.type}
-                >
-                  <MenuItem value="Student">Student</MenuItem>
-                  <MenuItem value="Teacher">Teacher</MenuItem>
-                  <MenuItem value="ATP">ATP</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">Level</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue="1CS"
-                  name="education_level"
-                  value={values.education_level}
+                  autoComplete="lname"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  value={values.email}
                   onChange={handleChange}
-                >
-                  {educationLevels[values.type].map((level) => (
-                    <MenuItem value={level}>{level}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password1"
+                  onChange={handleChange}
+                  value={values.password1}
+                  label="Password"
+                  type="password"
+                  id="password1"
+                  autoComplete="current-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password2"
+                  onChange={handleChange}
+                  value={values.password2}
+                  label="Password Comfirmation"
+                  type="password"
+                  id="password2"
+                  autoComplete="current-password"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="sex"
+                    onChange={handleChange}
+                    value={values.sex}
+                  >
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id="date"
+                  label="Birthday"
+                  type="date"
+                  name="date_of_birth"
+                  defaultValue="1970-01-01"
+                  onChange={handleChange}
+                  value={values.date_of_birth}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <MuiPhoneInput
+                  defaultCountry="dz"
+                  onlyCountries={['dz']}
+                  name="phone"
+                  value={values.phone}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="type"
+                    onChange={handleChange}
+                    value={values.type}
+                  >
+                    <MenuItem value="Student">Student</MenuItem>
+                    <MenuItem value="Teacher">Teacher</MenuItem>
+                    <MenuItem value="ATP">ATP</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-label">Level</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    defaultValue="1CS"
+                    name="education_level"
+                    value={values.education_level}
+                    onChange={handleChange}
+                  >
+                    {educationLevels[values.type].map((level) => (
+                      <MenuItem value={level}>{level}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              className={classes.submit}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+        </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </Container>
+    </div>
   );
 }
