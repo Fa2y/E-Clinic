@@ -20,6 +20,9 @@ import { useHistory } from 'react-router-dom';
 // Logo image
 import logo from 'assets/img/cliniquelogo.png';
 
+// navbar
+import { AuthNavBar } from 'views/Home';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -115,65 +118,68 @@ const Login = () => {
     }
   };
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar alt="E-Clinic" src={logo} className={classes.avatar} />
-        <Typography component="h1" variant="h5">
-          Login
-        </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="email"
-                type="email"
-                name="email"
-                value={values.first_name}
-                variant="outlined"
-                required
-                fullWidth
-                onChange={handleChange}
-                id="email"
-                label="Email"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                onChange={handleChange}
-                value={values.password}
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            className={classes.submit}
-          >
+    <div>
+      <AuthNavBar />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar alt="E-Clinic" src={logo} className={classes.avatar} />
+          <Typography component="h1" variant="h5">
             Login
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/signup" variant="body2">
-                You don&apos;t have an account! Login
-              </Link>
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="email"
+                  type="email"
+                  name="email"
+                  value={values.first_name}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="email"
+                  label="Email"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  onChange={handleChange}
+                  value={values.password}
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-    </Container>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              className={classes.submit}
+            >
+              Login
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/signup" variant="body2">
+                  You don&apos;t have an account! Login
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+      </Container>
+    </div>
   );
 };
 
