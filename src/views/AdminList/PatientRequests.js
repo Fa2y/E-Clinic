@@ -58,7 +58,7 @@ export default function TableList() {
     data: pData,
     error: pErr,
     mutate,
-  } = useSWR(['patient_requests'], patientAPI.fetchPatients);
+  } = useSWR(['patients'], patientAPI.fetchPatients);
 
   useEffect(() => {
     if (!pErr && pData) {

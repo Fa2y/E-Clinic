@@ -12,7 +12,7 @@ export default function AsynchronousSelectMr({ patient, handleChange }) {
   const [options, setOptions] = React.useState([]);
   const loading = open && options?.length === 0;
   const { data: pData, error: pErr } = useSWR(
-    ['patients'],
+    ['patientsMedicalRecord'],
     doctorAPI.fetchMedicalRecord,
   );
   React.useEffect(() => {

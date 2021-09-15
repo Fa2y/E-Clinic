@@ -245,6 +245,22 @@ const doctorAPI = {
       return error.response;
     }
   },
+  fetchStatistics: async () => {
+    const token = getToken();
+    try {
+      const response = await axios.get(
+        `${SERVER_URL}/api-medical/statistics/`,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
 
 export default doctorAPI;

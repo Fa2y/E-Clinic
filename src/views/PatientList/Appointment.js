@@ -930,7 +930,7 @@ export default function Appointment() {
     data: swrData,
     error: swrErr,
     mutate,
-  } = useSWR(['appointments'], patientAPI.fetchAppointments);
+  } = useSWR(['Patientappointments'], patientAPI.fetchAppointments);
   React.useEffect(() => {
     if (!swrErr && swrData) {
       const { data, status } = swrData;

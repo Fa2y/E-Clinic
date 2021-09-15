@@ -2,11 +2,41 @@ import React, { useState } from 'react';
 import { Bar, Doughnut, Pie } from 'react-chartjs-2';
 import Card from 'components/Card/Card';
 import { Button, Grid } from '@material-ui/core';
+import useSWR from 'swr';
+import { toast } from 'react-toastify';
+import { extractErrorMsg } from 'lib/utils/helpers';
+import doctorAPI from 'lib/api/doctor';
 
 const BarChart = () => {
   const [showg, setShowg] = useState(false);
   const [showcd, setShowcd] = useState(false);
   const [showd, setShowd] = useState(false);
+  const [generalitiesData, setGeneralitiesData] = useState({});
+  const [smoking, setSmoking] = useState({});
+  const [alcohol, setAlcohol] = useState({});
+
+  const { data: swrData, error: swrErr } = useSWR(
+    ['statistics'],
+    doctorAPI.fetchStatistics,
+  );
+  React.useEffect(() => {
+    if (!swrErr && swrData) {
+      const { data, status } = swrData;
+
+      if (status < 200 || status > 299) {
+        const errors = extractErrorMsg(data);
+        errors.map((error) => toast.error(error));
+        return [];
+      }
+      setGeneralitiesData(data);
+      setSmoking(data?.smokers);
+      setAlcohol(data?.alcoholics);
+      return data;
+    }
+    return [];
+  }, [swrData, swrErr]);
+  const sumValues = (obj) =>
+    obj ? Object.values(obj).reduce((a, b) => a + b, 0) : 0;
   return (
     <Grid container spacing={2}>
       <Grid item xs={1} />
@@ -57,7 +87,10 @@ const BarChart = () => {
               datasets: [
                 {
                   label: '# of votes',
-                  data: [60, 125],
+                  data: [
+                    sumValues(smoking),
+                    generalitiesData?.all - sumValues(smoking),
+                  ],
                   backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -113,11 +146,11 @@ const BarChart = () => {
             height={400}
             width={600}
             data={{
-              labels: ['1CP', '2CP', '1CS', '2CS', '3CS', 'Teachers'],
+              labels: smoking ? Object.keys(smoking) : [],
               datasets: [
                 {
                   label: 'Sorted by Level',
-                  data: [40, 22, 3, 15, 20, 22],
+                  data: smoking ? Object.values(smoking) : [],
                   backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -193,11 +226,14 @@ const BarChart = () => {
         <Grid item xs={4}>
           <Doughnut
             data={{
-              labels: ['Ill', 'Sane'],
+              labels: ['Consumers', 'Non Consumers'],
               datasets: [
                 {
                   label: '# of votes',
-                  data: [12, 29],
+                  data: [
+                    sumValues(alcohol?.sex),
+                    generalitiesData?.all - sumValues(alcohol?.sex),
+                  ],
                   backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -253,11 +289,11 @@ const BarChart = () => {
             height={400}
             width={600}
             data={{
-              labels: ['1CP', '2CP', '1CS', '2CS', '3CS', 'Teachers'],
+              labels: alcohol?.level ? Object.keys(alcohol?.level) : [],
               datasets: [
                 {
                   label: 'Sorted by Level',
-                  data: [40, 22, 3, 15, 20, 22],
+                  data: alcohol?.level ? Object.values(alcohol?.level) : [],
                   backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -303,11 +339,11 @@ const BarChart = () => {
         <Grid item xs={4}>
           <Pie
             data={{
-              labels: ['Women', 'Men'],
+              labels: ['Men', 'Women'],
               datasets: [
                 {
                   label: 'Sorted by Percentage',
-                  data: [12, 19],
+                  data: alcohol?.sex ? Object.values(alcohol?.sex) : [],
                   backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',

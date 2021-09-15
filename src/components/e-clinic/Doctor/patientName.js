@@ -12,7 +12,7 @@ export default function PatientName({ patient, handleChange, name }) {
   const [options, setOptions] = React.useState([]);
   const loading = open && options?.length === 0;
   const { data: pData, error: pErr } = useSWR(
-    ['patients'],
+    ['patientsNoMedicalRecord'],
     doctorAPI.fetchPatientsNoMedicalRecord,
   );
   React.useEffect(() => {

@@ -64,7 +64,7 @@ const Login = () => {
     data: userData,
     error: userErr,
     mutate,
-  } = useSWR(['patients'], Auth.getUser);
+  } = useSWR(['getUser'], Auth.getUser);
 
   React.useEffect(() => {
     const token = getToken();
