@@ -12,6 +12,9 @@ import CardBody from 'components/Card/CardBody';
 import Popup from 'components/Popup';
 import useSWR from 'swr';
 import patientAPI from 'lib/api/admin';
+import { extractErrorMsg } from 'lib/utils/helpers';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
 const styles = {
   cardCategoryWhite: {
@@ -51,32 +54,48 @@ export default function TableList() {
   const [patients, setPatients] = useState([]);
   const [restoredPatient, setRestoredPatient] = useState('');
 
-  const { data: pData, error: pErr } = useSWR(
-    ['archived'],
-    patientAPI.fetchDeletedPatients,
-  );
+  const {
+    data: pData,
+    error: pErr,
+    mutate,
+  } = useSWR(['archived'], patientAPI.fetchDeletedPatients);
 
   useEffect(() => {
     if (!pErr && pData) {
-      const data = pData?.data
-        ?.filter((patient) => !patient.is_approved)
-        .map((patient) => [
-          patient.user.first_name,
-          patient.user.last_name,
-          patient.user.email,
-          patient.user.date_joined,
-          `${patient.type} : ${patient.education_level}`,
-          patient.pid,
-        ]);
-      setPatients(data);
-    } else {
-      // Show error
+      const { data, status } = pData;
+
+      if (status < 200 || status > 299) {
+        const errors = extractErrorMsg(data);
+        errors.map((error) => toast.error(error));
+        return [];
+      }
+      setPatients(
+        pData?.data
+          ?.filter((patient) => !patient.is_approved)
+          .map((patient) => [
+            patient.user.first_name,
+            patient.user.last_name,
+            patient.user.email,
+            moment(patient.user.date_joined).format('YYYY MMM DD'),
+            `${patient.type} : ${patient.education_level}`,
+            patient.pid,
+          ]),
+      );
     }
+    return [];
   }, [pData, pErr]);
 
-  const handleRestore = (pid) => {
-    patientAPI.restorePatient(pid);
+  const handleRestore = async (pid) => {
+    const { data, status } = await patientAPI.restorePatient(pid);
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors.map((error) => toast.error(error));
+      return [];
+    }
+    toast.success('Patient Restored Successfully');
+    mutate({ data: [], status: 200 }, true);
     setOpenPopup(false);
+    return [];
   };
 
   return (

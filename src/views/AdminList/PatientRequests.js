@@ -12,6 +12,9 @@ import CardBody from 'components/Card/CardBody';
 import Popup from 'components/Popup';
 import useSWR from 'swr';
 import patientAPI from 'lib/api/admin';
+import { extractErrorMsg } from 'lib/utils/helpers';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
 const styles = {
   cardCategoryWhite: {
@@ -55,34 +58,61 @@ export default function TableList() {
     data: pData,
     error: pErr,
     mutate,
-  } = useSWR([''], patientAPI.fetchPatients);
+  } = useSWR(['patient_requests'], patientAPI.fetchPatients);
 
   useEffect(() => {
     if (!pErr && pData) {
-      const data = pData?.data
-        .filter((patient) => !patient.is_approved)
-        .map((patient) => [
-          patient.user.first_name,
-          patient.user.last_name,
-          patient.user.email,
-          patient.user.date_joined,
-          `${patient.type} : ${patient.education_level}`,
-          patient.pid,
-        ]);
-      setPatients(data);
-    } else {
-      // Show error
+      const { data, status } = pData;
+
+      if (status < 200 || status > 299) {
+        const errors = extractErrorMsg(data);
+        errors.map((error) => toast.error(error));
+        return [];
+      }
+      setPatients(
+        data
+          .filter((patient) => !patient.is_approved)
+          .map((patient) => [
+            patient.user.first_name,
+            patient.user.last_name,
+            patient.user.email,
+            moment(patient.user.date_joined).format('YYYY MMM DD'),
+            `${patient.type} : ${patient.education_level}`,
+            patient.pid,
+          ]),
+      );
+
+      return data;
     }
+    // Show error
+    return [];
   }, [pData, pErr]);
 
-  const handleApproave = (pid) => {
-    patientAPI.editPatient(pid, { is_approved: true });
-    mutate(pData, true);
+  const handleApproave = async (pid) => {
+    const { data, status } = await patientAPI.editPatient(pid, {
+      is_approved: true,
+    });
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors.map((error) => toast.error(error));
+      return [];
+    }
+    toast.success('Patient Approved Successfully');
+    mutate({ data: [], status: 200 }, true);
+    return [];
   };
-  const handleDelete = (pid) => {
+  const handleDelete = async (pid) => {
     patientAPI.deletePatient(pid);
-    mutate(pData, true);
+    const { data, status } = await patientAPI.deletePatient(pid);
+    if (status < 200 || status > 299) {
+      const errors = extractErrorMsg(data);
+      errors.map((error) => toast.error(error));
+      return [];
+    }
+    toast.error('Patient deleted Successfully');
+    mutate({ data: [], status: 200 }, true);
     setOpenPopup(false);
+    return [];
   };
   return (
     <GridContainer>
