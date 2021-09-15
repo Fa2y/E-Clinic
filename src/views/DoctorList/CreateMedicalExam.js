@@ -2,6 +2,7 @@ import React from 'react';
 import GridContainer from 'components/Grid/GridContainer';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
+import CardHeader from 'components/Card/CardHeader';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
@@ -80,6 +81,9 @@ export default function CreateMedicalExam() {
     <div>
       <GridContainer>
         <Card>
+          <CardHeader color="info">
+            <h3>Create Medical Exam</h3>
+          </CardHeader>
           <CardBody>
             <AsynchronousSelectMr
               patient={patient.attribute}
