@@ -3,14 +3,12 @@ import React from 'react';
 //  @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles';
 //  core components
-import Button from '@material-ui/core/Button';
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
-import CardFooter from 'components/Card/CardFooter';
 //  import doctorAPI from 'lib/api/doctor';
 //  import { extractErrorMsg } from 'lib/utils/helpers';
 //  import { toast } from 'react-toastify';
-import AsynchronousSelectMr from 'components/e-clinic/Doctor/AsynchronousSelectMr';
+// import AsynchronousSelectMr from 'components/e-clinic/Doctor/AsynchronousSelectMr';
 // import FetchTobacoConsumption from 'components/e-clinic/Doctor/DisplayMedRec/FetchTobacoConsumption';
 import InputLabel from '@material-ui/core/InputLabel';
 //  core components
@@ -25,9 +23,10 @@ import MedicalObjects from 'Medical_constants/constants';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CardHeader from 'components/Card/CardHeader';
-import doctorAPI from 'lib/api/doctor';
+import patientAPI from 'lib/api/patient';
 import { extractErrorMsg } from 'lib/utils/helpers';
 import { toast } from 'react-toastify';
+import useSWR from 'swr';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -288,69 +287,68 @@ export default function DisplayMedicalRecord() {
   const [values, setvalues] = React.useState({
     ...initialState,
   });
-  const [historyvalues, setHistoryvalues] = React.useState({
-    smokingNumberUnits: 0,
-    chewingNumberUnits: 0,
-    injectionNumbernits: 0,
-    ageFc: '',
-    duration: '',
-    medication: '',
-  });
+  // const [historyvalues, setHistoryvalues] = React.useState({
+  //   smokingNumberUnits: 0,
+  //   chewingNumberUnits: 0,
+  //   injectionNumbernits: 0,
+  //   ageFc: '',
+  //   duration: '',
+  //   medication: '',
+  // });
   const [edited_values, setEdited] = React.useState({
     ...initialState,
   });
-  const handleChangeChecked = (event) => {
-    if (event?.target) {
-      setvalues({
-        ...values,
-        [event.target.name]: event.target.checked,
-      });
-      setEdited({
-        ...edited_values,
-        [event.target.name]: event.target.checked,
-      });
-    }
+  const handleChangeChecked = () => {
+    // if (event?.target) {
+    //   setvalues({
+    //     ...values,
+    //     [event.target.name]: event.target.checked,
+    //   });
+    //   setEdited({
+    //     ...edited_values,
+    //     [event.target.name]: event.target.checked,
+    //   });
+    // }
   };
-  const [keyForm, setkey] = React.useState(false); //  when i click cancel : state change so all components on the form will re_render
+  // const [keyForm, setkey] = React.useState(false); //  when i click cancel : state change so all components on the form will re_render
 
-  const handlePatientChange = (event, selectedValue) => {
-    setvalues(selectedValue);
-    setEdited(selectedValue);
+  // const handlePatientChange = (event, selectedValue) => {
+  //   setvalues(selectedValue);
+  //   setEdited(selectedValue);
+  // };
+  const handleChange = () => {
+    // if (event?.target) {
+    //   setHistoryvalues({
+    //     ...historyvalues,
+    //     [event.target.name]: event.target.value,
+    //   });
+    //   setEdited({
+    //     ...edited_values,
+    //     [event.target.name]: event.target.value,
+    //   });
+    // }
   };
-  const handleChange = (event) => {
-    if (event?.target) {
-      setHistoryvalues({
-        ...historyvalues,
-        [event.target.name]: event.target.value,
-      });
-      setEdited({
-        ...edited_values,
-        [event.target.name]: event.target.value,
-      });
-    }
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const { data: swrData, error: swrErr } = useSWR(
+    ['fetchMedicalRecord'],
+    patientAPI.fetchMedicalRecord,
+  );
 
-    const { data: resData, status } = await doctorAPI.editMedicalRecord(
-      values.id,
-      edited_values,
-    );
-    if (status < 200 || status > 299) {
-      const errors = extractErrorMsg(resData);
-      errors.map((error) => toast.error(error));
-    } else {
-      setvalues(resData);
-      setEdited(resData);
-      //  setinitial(initialState);
-      toast.success('Medical Record updated successfully!');
-    }
-  };
+  React.useEffect(() => {
+    if (!swrErr && swrData) {
+      const { data, status } = swrData;
 
-  const cancel = () => {
-    setkey(!keyForm);
-    setEdited(values);
-  };
+      if (status < 200 || status > 299) {
+        const errors = extractErrorMsg(data);
+        errors.map((error) => toast.error(error));
+        return [];
+      }
+      setvalues(data); // .filter((row) => row?.status !== 'cancelled')
+      setEdited(data); // .filter((row) => row?.status !== 'cancelled')
+      return data;
+    }
+    return [];
+  }, [swrData, swrErr]);
+
   //  const handleChange = (event) => {
   //    if (event?.target) {
   //      setinitial({
@@ -366,22 +364,14 @@ export default function DisplayMedicalRecord() {
 
   return (
     <div>
-      <form key={keyForm}>
+      <form>
         <GridContainer>
           <Card>
-            <CardHeader color="info">
+            <CardHeader color="success">
               <h3>Dislplay Medical Record</h3>
             </CardHeader>
             <CardBody>
               <br />
-              <GridContainer>
-                <GridItem xs={12}>
-                  <AsynchronousSelectMr
-                    patient={values}
-                    handleChange={handlePatientChange}
-                  />
-                </GridItem>
-              </GridContainer>
               <h2>
                 <strong>Patient&apos;s informations</strong>
               </h2>
@@ -473,6 +463,7 @@ export default function DisplayMedicalRecord() {
                       <Checkbox
                         checked={edited_values?.smoking}
                         onChange={handleChangeChecked}
+                        // disabled
                         name="smoking"
                         color="primary"
                       />
@@ -1041,29 +1032,6 @@ export default function DisplayMedicalRecord() {
               </GridContainer>
             </CardBody>
             <br />
-            <div className={classes.btnDiv}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                className={classes.btn}
-                onClick={handleSubmit}
-                type="submit"
-              >
-                Update
-              </Button>
-
-              <Button
-                variant="contained"
-                color="secondary"
-                size="large"
-                className={classes.btn}
-                onClick={cancel}
-              >
-                Cancel
-              </Button>
-            </div>
-            <CardFooter />
           </Card>
         </GridContainer>
       </form>

@@ -114,7 +114,7 @@ export default function Doctor({ ...rest }) {
         <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
-          color="secondary"
+          color="success"
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...rest}
         />

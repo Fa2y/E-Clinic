@@ -4,7 +4,7 @@ import FetchClinicalExam from 'components/e-clinic/Doctor/DisplayMedExm/FetchCli
 import FetchEvacuation from 'components/e-clinic/Doctor/DisplayMedExm/FetchEvacuation';
 import FetchOrdonance from 'components/e-clinic/Doctor/DisplayMedExm/FetchOrdonance';
 import FetchOrientation from 'components/e-clinic/Doctor/DisplayMedExm/FetchOrientation';
-import AsynchronousSelectMedicalExam from 'components/e-clinic/Doctor/AsynchronousMedicalExam';
+import AsynchronousSelectMedicalExamPatient from 'components/e-clinic/Doctor/AsynchronousMedicalExamPatient';
 
 import Card from 'components/Card/Card';
 import CardBody from 'components/Card/CardBody';
@@ -21,14 +21,14 @@ export default function DisplayMedExam() {
   return (
     <div>
       <Card>
-        <CardHeader color="info">
+        <CardHeader color="success">
           <h3>Dislplay Medical Exam</h3>
         </CardHeader>
         <CardBody>
           <br />
           <GridContainer>
             <GridItem xs={12}>
-              <AsynchronousSelectMedicalExam
+              <AsynchronousSelectMedicalExamPatient
                 patient={values}
                 handleChange={handleValuesChange}
               />

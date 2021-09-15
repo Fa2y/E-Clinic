@@ -550,7 +550,7 @@ const CreateAppointmentModal = ({
       <GridContainer style={{ display: 'flex', justifyContent: 'center' }}>
         <GridItem xs={6}>
           <Card>
-            <CardHeader color="info">
+            <CardHeader color="success">
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                   <h4 className={classes.cardTitleWhite}>Appointment</h4>
@@ -753,7 +753,7 @@ const EditAppointmentModal = ({
       <GridContainer style={{ display: 'flex', justifyContent: 'center' }}>
         <GridItem xs={6}>
           <Card>
-            <CardHeader color="info">
+            <CardHeader color="success">
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                   <h4 className={classes.cardTitleWhite}>Appointment</h4>
@@ -870,7 +870,7 @@ const CancelAppointmentModal = ({ openCancel, setOpenCancel }) => {
       <GridContainer style={{ display: 'flex', justifyContent: 'center' }}>
         <GridItem xs={6}>
           <Card>
-            <CardHeader color="info">
+            <CardHeader color="success">
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
                   <h4 className={classes.cardTitleWhite}>Appointment</h4>
@@ -1041,7 +1041,7 @@ export default function Appointment() {
         mutate={mutate}
       />
       <Card>
-        <CardHeader color="info">
+        <CardHeader color="success">
           <h3>Appointment Management</h3>
         </CardHeader>
         <CardBody>

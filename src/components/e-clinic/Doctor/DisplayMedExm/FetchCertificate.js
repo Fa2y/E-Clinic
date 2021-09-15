@@ -65,7 +65,7 @@ export default function FetchCertificate({ values }) {
                     <br></br>
                     Seen by:
                     <strong>
-                      {` Dr.${user?.last_name} ${user?.first_name}`}
+                      {` Dr.${values?.doctor_data?.last_name} ${values?.doctor_data?.first_name}`}
                     </strong>
                   </p>
                 </div>

@@ -3,6 +3,38 @@ import SERVER_URL from '../utils/constants';
 import { getToken } from '../utils/helpers';
 
 const patientAPI = {
+  fetchMedicalRecord: async () => {
+    const token = getToken();
+    try {
+      const response = await axios.get(
+        `${SERVER_URL}/api-medical/patient_medical_record/`,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+  fetchMedicalExam: async () => {
+    const token = getToken();
+    try {
+      const response = await axios.get(
+        `${SERVER_URL}/api-medical/patient_medical_exam/`,
+        {
+          headers: {
+            Authorization: `token ${encodeURIComponent(token)}`,
+          },
+        },
+      );
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
   fetchAppointments: async () => {
     const token = getToken();
     try {

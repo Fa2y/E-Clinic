@@ -80,7 +80,7 @@ export default function FetchOrdonance({ values }) {
                 <GridItem xs={12} sm={12} md={6}>
                   <div className={classes.header}>
                     <p>
-                      <strong>{`Dr.${user?.last_name} ${user?.first_name}`}</strong>
+                      <strong>{`Dr.${values?.doctor_data?.last_name} ${values?.doctor_data?.first_name}`}</strong>
                     </p>
                     <p>
                       <strong>Date : {values?.date}</strong>

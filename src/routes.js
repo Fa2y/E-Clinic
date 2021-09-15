@@ -27,6 +27,7 @@ import DisplayMedExam from 'views/DoctorList/DisplayMedExam';
 
 // core components/views for Patient layout
 import DisplayPatientMedicalRecord from 'views/PatientList/DisplayMedRec';
+import DisplayPatientMedicalExam from 'views/PatientList/DisplayMedExam';
 import PatientAppointment from 'views/PatientList/Appointment';
 
 export const adminDashboardRoutes = [
@@ -138,6 +139,14 @@ export const patientDashboardRoutes = [
     rtlName: 'قائمة الجدول',
     icon: AccessibilityIcon,
     component: DisplayPatientMedicalRecord,
+    layout: '/patient',
+  },
+  {
+    path: '/DisplayPatientMedExam',
+    name: 'Patient Medical Exam',
+    rtlName: 'قائمة الجدول',
+    icon: AccessibilityIcon,
+    component: DisplayPatientMedicalExam,
     layout: '/patient',
   },
   {
